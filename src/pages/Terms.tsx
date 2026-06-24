@@ -20,124 +20,199 @@ export function Terms() {
 
         <div className="space-y-6 text-gray-300 text-sm leading-relaxed">
           <section>
-            <h2 className="text-lg font-semibold text-white mb-2">1. Premesse</h2>
+            <h2 className="text-lg font-semibold text-white mb-2">1. Informazioni Generali</h2>
             <p>
-              Beauty CRM (di seguito "il Servizio") è un software di gestione per saloni di bellezza, 
-              estetisti e professionisti del settore, offerto da [Nome Azienda], con sede in [Indirizzo] 
-              (di seguito "il Titolare").
+              Beauty CRM (di seguito "il Servizio" o "la Piattaforma") è un software di gestione 
+              per saloni di bellezza, estetisti, barberie e professionisti del settore benessere, 
+              sviluppato e offerto da [Nome Azienda], con sede legale in [Indirizzo] 
+              (di seguito "il Titolare", "noi" o "nostro").
             </p>
             <p className="mt-2">
-              I presenti Termini e Condizioni Generali (di seguito "Condizioni") disciplinano l'accesso 
-              e l'utilizzo del Servizio da parte dell'utente (di seguito "l'Utente").
+              I presenti Termini e Condizioni Generali (di seguito "le Condizioni") costituiscono 
+              un accordo legalmente vincolante tra l'utente (di seguito "l'Utente", "tu" o "titolare 
+              dell'account") e il Titolare in relazione all'accesso e all'utilizzo del Servizio.
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-white mb-2">2. Accettazione delle Condizioni</h2>
             <p>
-              L'utilizzo del Servizio implica l'accettazione piena e incondizionata delle presenti 
-              Condizioni. Se l'Utente non accetta le Condizioni, non è autorizzato a utilizzare il Servizio.
+              Registrandoti e utilizzando il Servizio, l'Utente dichiara di aver letto, compreso e 
+              accettato tutte le presenti Condizioni. Se non accetti una qualsiasi parte delle Condizioni, 
+              non sei autorizzato a registrarti o utilizzare il Servizio.
+            </p>
+            <p className="mt-2">
+              L'uso continuato del Servizio dopo la pubblicazione di eventuali modifiche costituisce 
+              accettazione automatica delle nuove Condizioni. Ti consigliamo di consultare periodicamente 
+              questa pagina.
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-white mb-2">3. Registrazione e Account</h2>
-            <p>
-              Per utilizzare il Servizio, l'Utente deve registrarsi creando un account. L'Utente garantisce 
-              che le informazioni fornite durante la registrazione sono veritiere, accurate e complete.
-            </p>
+            <p>Per accedere al Servizio, l'Utente deve creare un account fornendo:</p>
+            <ul className="list-disc pl-5 mt-2 space-y-1">
+              <li>Nome e cognome</li>
+              <li>Indirizzo email valido</li>
+              <li>Nome del salone o attività</li>
+              <li>Una password sicura</li>
+            </ul>
             <p className="mt-2">
-              L'Utente è responsabile della riservatezza delle proprie credenziali di accesso e di tutte 
-              le attività che avvengono sotto il proprio account.
+              L'Utente garantisce che tutte le informazioni fornite sono veritiere, aggiornate e complete. 
+              È responsabile della riservatezza delle proprie credenziali di accesso e di tutte le attività 
+              che avvengono sotto il proprio account. In caso di utilizzo non autorizzato, l'Utente deve 
+              comunicarlo immediatamente al supporto.
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-white mb-2">4. Descrizione del Servizio</h2>
             <p>
-              Beauty CRM offre funzionalità di:
+              Beauty CRM mette a disposizione degli operatori del settore benessere una suite completa 
+              di strumenti digitali per la gestione quotidiana della propria attività. Le funzionalità 
+              includono:
             </p>
             <ul className="list-disc pl-5 mt-2 space-y-1">
-              <li>Gestione appuntamenti e calendario</li>
-              <li>Gestione clienti e anagrafica</li>
-              <li>Gestione servizi e listino prezzi</li>
-              <li>Gestione cassa e incassi</li>
-              <li>Gestione magazzino e scorte</li>
-              <li>Statistiche e reportistica</li>
-              <li>Promemoria WhatsApp (solo piano Premium)</li>
+              <li><strong>Agenda e Calendario:</strong> gestione appuntamenti con vista settimanale, slot da 30 minuti, orario 05:00-20:00</li>
+              <li><strong>Anagrafica Clienti:</strong> archivio clienti con cronologia appuntamenti, preferenze, note e foto</li>
+              <li><strong>Servizi e Listino:</strong> catalogo servizi personalizzabile con durata, prezzo e colore</li>
+              <li><strong>Dashboard e Statistiche:</strong> riepilogo giornaliero con incassi, appuntamenti e trend (piano Premium)</li>
+              <li><strong>Promemoria WhatsApp:</strong> notifiche automatiche ai clienti 24h prima dell'appuntamento (piano Premium)</li>
+              <li><strong>Backup automatico:</strong> salvaguardia quotidiana dei dati su cloud (piano Premium)</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-white mb-2">5. Piani e Pagamenti</h2>
+            <h2 className="text-lg font-semibold text-white mb-2">5. Piani e Corrispettivi</h2>
             <p>
-              Il Servizio è offerto secondo due piani:
+              Il Servizio è offerto secondo i seguenti piani di abbonamento:
             </p>
-            <ul className="list-disc pl-5 mt-2 space-y-1">
-              <li><strong>Free:</strong> gratuito, con un limite massimo di 30 clienti e funzionalità base.</li>
-              <li><strong>Premium:</strong> a pagamento, con clienti illimitati e funzionalità avanzate.</li>
+            <ul className="list-disc pl-5 mt-2 space-y-2">
+              <li>
+                <strong>Piano Free (gratuito):</strong> accesso illimitato alle funzionalità base con 
+                un limite massimo di 30 clienti registrati. Include calendario, gestione clienti base 
+                e servizi. Nessuna carta di credito richiesta.
+              </li>
+              <li>
+                <strong>Piano Premium (a pagamento):</strong> tutte le funzionalità senza limiti, 
+                inclusi clienti illimitati, promemoria WhatsApp automatici, statistiche avanzate, 
+                brand personalizzato e backup automatico. Il costo è di €9,90 (IVA inclusa) al mese, 
+                con pagamento ricorrente elaborato tramite Stripe.
+              </li>
             </ul>
             <p className="mt-2">
-              I pagamenti per il piano Premium vengono elaborati tramite Stripe. L'abbonamento è 
-              mensile e si rinnova automaticamente salvo disdetta. L'Utente può cancellare l'abbonamento 
-              in qualsiasi momento dalle impostazioni del proprio account.
+              I prezzi possono essere modificati con preavviso di 30 giorni via email. Le modifiche 
+              non si applicano al ciclo di fatturazione in corso.
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-white mb-2">6. Obblighi dell'Utente</h2>
-            <p>
-              L'Utente si impegna a:
-            </p>
+            <h2 className="text-lg font-semibold text-white mb-2">6. Fatturazione e Rinnovo</h2>
             <ul className="list-disc pl-5 mt-2 space-y-1">
-              <li>Utilizzare il Servizio in conformità con la legge</li>
-              <li>Non utilizzare il Servizio per scopi illeciti o fraudolenti</li>
-              <li>Non tentare di accedere a parti non autorizzate del sistema</li>
-              <li>Non diffondere malware o codice dannoso attraverso il Servizio</li>
-              <li>Rispettare la privacy dei propri clienti</li>
+              <li>L'abbonamento Premium si rinnova automaticamente ogni mese</li>
+              <li>Il pagamento viene addebitato il primo giorno di ogni ciclo di fatturazione</li>
+              <li>L'Utente può cancellare l'abbonamento in qualsiasi momento dalle impostazioni dell'account o contattando il supporto</li>
+              <li>In caso di cancellazione, l'accesso alle funzionalità Premium rimane attivo fino alla fine del periodo di fatturazione corrente</li>
+              <li>Non sono previsti rimborsi per periodi parziali</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-white mb-2">7. Trattamento dei Dati Personali</h2>
+            <h2 className="text-lg font-semibold text-white mb-2">7. Obblighi dell'Utente</h2>
+            <p>L'Utente si impegna a:</p>
+            <ul className="list-disc pl-5 mt-2 space-y-1">
+              <li>Utilizzare il Servizio in conformità con le leggi e normative applicabili</li>
+              <li>Non utilizzare il Servizio per scopi illeciti, fraudolenti o dannosi</li>
+              <li>Non tentare di accedere a parti non autorizzate del sistema, API o dati altrui</li>
+              <li>Non diffondere virus, malware o codice dannoso attraverso la Piattaforma</li>
+              <li>Rispettare la normativa GDPR nel trattamento dei dati dei propri clienti</li>
+              <li>Non rivendere, cedere o sublicenziare l'account a terzi</li>
+              <li>Comunicare tempestivamente eventuali violazioni della sicurezza</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-semibold text-white mb-2">8. Trattamento dei Dati Personali</h2>
             <p>
-              Il trattamento dei dati personali è disciplinato dalla Privacy Policy del Servizio, 
-              consultabile al link dedicato. L'Utente è il Titolare del trattamento dei dati dei 
-              propri clienti, mentre il Titolare del Servizio agisce come Responsabile del trattamento.
+              Il trattamento dei dati personali è disciplinato dalla nostra Privacy Policy, 
+              disponibile alla pagina dedicata. In sintesi:
+            </p>
+            <ul className="list-disc pl-5 mt-2 space-y-1">
+              <li>L'Utente è il Titolare del trattamento dei dati dei propri clienti inseriti nella Piattaforma</li>
+              <li>Il Titolare del Servizio agisce come Responsabile del trattamento ai sensi dell'art. 28 GDPR</li>
+              <li>I dati sono trattati esclusivamente per erogare il Servizio e non vengono ceduti a terzi</li>
+              <li>I dati sono crittografati in transito (TLS) e a riposo</li>
+              <li>I server sono situati in Europa (Google Cloud, Belgio)</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-semibold text-white mb-2">9. Proprietà Intellettuale</h2>
+            <p>
+              Tutti i diritti di proprietà intellettuale relativi al Servizio, inclusi software, 
+              design, loghi, marchi e contenuti originali, sono di proprietà esclusiva del Titolare 
+              o dei suoi licenziatari. L'Utente non acquisisce alcun diritto di proprietà 
+              sull'utilizzo del Servizio.
+            </p>
+            <p className="mt-2">
+              I dati inseriti dall'Utente (clienti, appuntamenti, servizi) rimangono di piena 
+              proprietà dell'Utente, che può esportarli in qualsiasi momento richiedendone una copia.
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-white mb-2">8. Limitazione di Responsabilità</h2>
+            <h2 className="text-lg font-semibold text-white mb-2">10. Limitazione di Responsabilità</h2>
             <p>
-              Il Servizio viene fornito "così com'è", senza garanzie esplicite o implicite. Il Titolare 
-              non sarà responsabile per danni diretti, indiretti, incidentali o consequenziali derivanti 
-              dall'uso o dall'impossibilità di usare il Servizio.
+              Il Servizio viene fornito "così com'è" e "come disponibile", senza garanzie esplicite 
+              o implicite di funzionamento ininterrotto o privo di errori. Il Titolare non sarà 
+              responsabile per:
+            </p>
+            <ul className="list-disc pl-5 mt-2 space-y-1">
+              <li>Danni diretti o indiretti derivanti dall'uso o dall'impossibilità di usare il Servizio</li>
+              <li>Perdita di dati o profitti, anche se prevedibile</li>
+              <li>Interruzioni del servizio dovute a manutenzione, guasti tecnici o cause di forza maggiore</li>
+              <li>Contenuti o condotta degli utenti</li>
+              <li>Danni derivanti da attacchi informatici nonostante l'adozione di misure di sicurezza standard</li>
+            </ul>
+            <p className="mt-2">
+              La responsabilità complessiva del Titolare per qualsiasi reclamo relativo al Servizio 
+              è limitata all'importo pagato dall'Utente nei 12 mesi precedenti il reclamo.
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-white mb-2">9. Modifiche alle Condizioni</h2>
+            <h2 className="text-lg font-semibold text-white mb-2">11. Sospensione e Cancellazione</h2>
             <p>
-              Il Titolare si riserva il diritto di modificare le presenti Condizioni in qualsiasi momento. 
-              Le modifiche saranno comunicate all'Utente via email o tramite avviso nel Servizio. 
-              L'uso continuato del Servizio dopo le modifiche costituisce accettazione delle nuove Condizioni.
+              Il Titolare si riserva il diritto di sospendere o cancellare l'account di un Utente in 
+              caso di violazione delle presenti Condizioni, uso fraudolento o inattività prolungata 
+              (oltre 12 mesi). L'Utente può cancellare il proprio account in qualsiasi momento 
+              contattando il supporto.
+            </p>
+            <p className="mt-2">
+              In caso di cancellazione, i dati dell'Utente saranno conservati per 30 giorni, 
+              trascorsi i quali verranno eliminati definitivamente, salvo obblighi di legge 
+              (es. dati fiscali conservati per 10 anni).
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-white mb-2">10. Contatti</h2>
-            <p>
-              Per qualsiasi domanda relativa ai presenti Termini, contattare:
-            </p>
-            <p className="mt-1">Email: info@beautycrm.website</p>
-          </section>
-
-          <section>
-            <h2 className="text-lg font-semibold text-white mb-2">11. Legge Applicabile</h2>
+            <h2 className="text-lg font-semibold text-white mb-2">12. Legge Applicabile e Foro Competente</h2>
             <p>
               Le presenti Condizioni sono regolate dalla legge italiana. Per qualsiasi controversia 
-              sarà competente il foro di residenza dell'Utente.
+              che dovesse sorgere in relazione all'interpretazione, esecuzione o validità delle 
+              presenti Condizioni, sarà competente il foro di residenza o domicilio dell'Utente, 
+              se consumatore, o il Foro di Roma per le controversie tra professionisti.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-semibold text-white mb-2">13. Contatti e Reclami</h2>
+            <p>
+              Per qualsiasi domanda, reclamo o richiesta relativa ai presenti Termini, contattaci:
+            </p>
+            <p className="mt-1">
+              <strong>Email:</strong> info@beautycrm.website<br />
+              <strong>Risposta:</strong> entro 48 ore lavorative
             </p>
           </section>
         </div>

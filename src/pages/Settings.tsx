@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { useAuth } from '../hooks/useAuth';
@@ -8,20 +9,22 @@ import { Input } from '../components/ui/Input';
 import { PremiumBadge } from '../components/ui/PremiumGate';
 import { useSubscription, PREMIUM_PRICE } from '../lib/subscription';
 import { useTheme } from '../hooks/useTheme';
-import { Bell, Smartphone, Crown, Check, Sparkles } from 'lucide-react';
+import { Bell, Smartphone, Crown, Check, Sparkles, LogOut, XCircle } from 'lucide-react';
 
 interface SettingsProps {
   onGoPremium: () => void;
 }
 
 export function Settings({ onGoPremium }: SettingsProps) {
-  const { user, firebaseUser } = useAuth();
+  const { user, firebaseUser, logout } = useAuth();
+  const navigate = useNavigate();
   const { isPremium } = useSubscription();
   const { themeName, setTheme } = useTheme();
   const [saving, setSaving] = useState(false);
   const [salonName, setSalonName] = useState(user?.salonName || '');
   const [phone, setPhone] = useState(user?.phone || '');
   const [reminderEnabled, setReminderEnabled] = useState(user?.settings?.reminderEnabled || false);
+  const [confirmLogout, setConfirmLogout] = useState(false);
 
   const uid = firebaseUser?.uid;
 
@@ -146,7 +149,7 @@ export function Settings({ onGoPremium }: SettingsProps) {
           </CardHeader>
           <div className="flex gap-3">
             {([
-              { name: 'green' as const, label: 'Verde', emoji: '🌿', color: '#4CAF50' },
+              { name: 'green' as const, label: 'Verde', emoji: '🌿', color: '#2E7D32' },
               { name: 'rose' as const, label: 'Rosa', emoji: '💕', color: '#E8537E' },
               { name: 'purple' as const, label: 'Viola', emoji: '💜', color: '#9C27B0' },
             ]).map((t) => (
@@ -212,6 +215,71 @@ export function Settings({ onGoPremium }: SettingsProps) {
         <Button fullWidth onClick={handleSave} disabled={saving}>
           {saving ? 'Salvataggio...' : 'Salva Impostazioni'}
         </Button>
+
+        {/* Divider */}
+        <div className="border-t border-[var(--border-light)] pt-4" />
+
+        {/* Cancel Subscription */}
+        {isPremium && (
+          <Card>
+            <CardHeader>
+              <h2 className="font-bold text-text-dark flex items-center gap-2">
+                <XCircle className="w-4 h-4 text-danger" />
+                Abbonamento
+              </h2>
+            </CardHeader>
+            <div className="space-y-3">
+              <p className="text-sm text-text-muted">
+                Sei attualmente abbonato al piano Premium a €{PREMIUM_PRICE.toFixed(2)}/mese.
+                Puoi disdire in qualsiasi momento.
+              </p>
+              <Button
+                variant="secondary"
+                fullWidth
+                onClick={() => {
+                  alert('Per disdire l\'abbonamento, contatta il supporto all\'email: info@beautycrm.website. La disdetta sarà effettiva dal prossimo ciclo di fatturazione.');
+                }}
+              >
+                <XCircle className="w-4 h-4 mr-1" />
+                Disdici Abbonamento
+              </Button>
+            </div>
+          </Card>
+        )}
+
+        {/* Logout */}
+        <div className="text-center">
+          {confirmLogout ? (
+            <div className="flex gap-3 justify-center">
+              <Button
+                size="sm"
+                variant="secondary"
+                onClick={() => setConfirmLogout(false)}
+              >
+                Annulla
+              </Button>
+              <Button
+                size="sm"
+                variant="danger"
+                onClick={async () => {
+                  await logout();
+                  navigate('/login');
+                }}
+              >
+                <LogOut className="w-4 h-4 mr-1" />
+                Conferma Logout
+              </Button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setConfirmLogout(true)}
+              className="text-sm text-text-muted hover:text-danger transition-colors flex items-center gap-1 mx-auto"
+            >
+              <LogOut className="w-4 h-4" />
+              Esci dall'account
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

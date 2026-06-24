@@ -5,13 +5,16 @@ import {
   where,
   onSnapshot,
   addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
   Timestamp,
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { useAuth } from '../hooks/useAuth';
 import { Button } from '../components/ui/Button';
 import { Modal } from '../components/ui/Modal';
-import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, Pencil, Trash2 } from 'lucide-react';
 import { formatCurrency } from '../lib/format';
 import type { Appointment, Service, Client } from '../types';
 
@@ -70,7 +73,9 @@ export function Calendar() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [services, setServices] = useState<Service[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingAppointment, setEditingAppointment] = useState<Appointment | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<{ hour: number; min: number; dateStr?: string } | null>(null);
 
   const weekDates = getWeekDates(currentDate);
@@ -142,7 +147,23 @@ export function Calendar() {
 
   const handleSlotClick = (clickDate: Date, hour: number, min: number) => {
     setSelectedSlot({ hour, min, dateStr: clickDate.toISOString().split('T')[0] });
-    setShowModal(true);
+    setShowAddModal(true);
+  };
+
+  const handleAppointmentClick = (e: React.MouseEvent, app: Appointment) => {
+    e.stopPropagation();
+    setEditingAppointment(app);
+    setShowEditModal(true);
+  };
+
+  const handleDeleteAppointment = async (appId: string) => {
+    try {
+      await deleteDoc(doc(db, 'appointments', appId));
+      setShowEditModal(false);
+      setEditingAppointment(null);
+    } catch (err) {
+      console.error('Error deleting appointment:', err);
+    }
   };
 
   return (
@@ -153,7 +174,7 @@ export function Calendar() {
           <h1 className="text-2xl font-bold text-text-dark">Calendario</h1>
           <p className="text-sm text-text-muted capitalize">{formatWeekRange(weekDates)}</p>
         </div>
-        <Button onClick={() => { setSelectedSlot(null); setShowModal(true); }}>
+        <Button onClick={() => { setSelectedSlot(null); setShowAddModal(true); }}>
           <Plus className="w-4 h-4 mr-1" />
           Nuovo
         </Button>
@@ -236,9 +257,10 @@ export function Calendar() {
                       {apps.map((app) => (
                         <div
                           key={app.id}
-                          className="text-[11px] p-1 rounded-md mb-0.5 cursor-pointer text-white font-medium truncate shadow-sm"
+                          className="text-[11px] p-1 rounded-md mb-0.5 cursor-pointer text-white font-medium truncate shadow-sm hover:opacity-90 transition-opacity"
                           style={{ backgroundColor: app.serviceName ? '#EC4899' : '#A855F7' }}
                           title={`${app.clientName} — ${app.serviceName || 'nessun servizio'}`}
+                          onClick={(e) => handleAppointmentClick(e, app)}
                         >
                           <span className="font-semibold">{app.clientName}</span>
                           {app.serviceName && (
@@ -256,11 +278,20 @@ export function Calendar() {
       </div>
 
       <AddAppointmentModal
-        isOpen={showModal}
-        onClose={() => { setShowModal(false); setSelectedSlot(null); }}
+        isOpen={showAddModal}
+        onClose={() => { setShowAddModal(false); setSelectedSlot(null); }}
         services={services}
         clients={clients}
         preselectedSlot={selectedSlot}
+      />
+
+      <EditAppointmentModal
+        isOpen={showEditModal}
+        appointment={editingAppointment}
+        onClose={() => { setShowEditModal(false); setEditingAppointment(null); }}
+        onDelete={handleDeleteAppointment}
+        services={services}
+        clients={clients}
       />
     </div>
   );
@@ -324,11 +355,7 @@ function AddAppointmentModal({
         createdAt: Timestamp.now(),
       });
       onClose();
-      setSelectedClientId('');
-      setSelectedServiceId('');
-      setDate(new Date().toISOString().split('T')[0]);
-      setTime('10:00');
-      setNotes('');
+      resetForm();
     } catch (err) {
       console.error('Error creating appointment:', err);
     } finally {
@@ -336,91 +363,293 @@ function AddAppointmentModal({
     }
   };
 
+  const resetForm = () => {
+    setSelectedClientId('');
+    setSelectedServiceId('');
+    setDate(new Date().toISOString().split('T')[0]);
+    setTime('10:00');
+    setNotes('');
+  };
+
   const activeServices = services.filter((s) => s.isActive);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Nuovo Appuntamento">
       <div className="space-y-4">
-        {/* Select client */}
-        <div>
-          <label className="block text-sm font-medium text-text-dark mb-1.5">Cliente</label>
-          <select
-            className="input-field"
-            value={selectedClientId}
-            onChange={(e) => setSelectedClientId(e.target.value)}
-          >
-            <option value="">Seleziona cliente...</option>
-            {clients.map((c) => (
-              <option key={c.id} value={c.id}>{c.name} — {c.phone}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Select service */}
-        <div>
-          <label className="block text-sm font-medium text-text-dark mb-1.5">Servizio</label>
-          <select
-            className="input-field"
-            value={selectedServiceId}
-            onChange={(e) => setSelectedServiceId(e.target.value)}
-          >
-            <option value="">Seleziona servizio...</option>
-            {activeServices.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.name} — {s.duration}min — {formatCurrency(s.price)}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Date and time */}
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="block text-sm font-medium text-text-dark mb-1.5">Data</label>
-            <input
-              type="date"
-              className="input-field"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-text-dark mb-1.5">Ora</label>
-            <input
-              type="time"
-              step="900"
-              className="input-field"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-            />
-          </div>
-        </div>
-
-        {selectedService && (
-          <div className="bg-[var(--primary-50)] rounded-xl p-3 text-sm">
-            <p className="font-medium text-text-dark">Riepilogo</p>
-            <p className="text-text-muted mt-1">
-              {client?.name} — {selectedService.name}<br />
-              {time} — {formatCurrency(selectedService.price)}
-              <span className="text-text-dim"> · {selectedService.duration}min</span>
-            </p>
-          </div>
-        )}
-
-        <div>
-          <label className="block text-sm font-medium text-text-dark mb-1.5">Note (opzionale)</label>
-          <textarea
-            className="input-field min-h-[60px] resize-none"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder="Indicazioni, richieste speciali..."
-          />
-        </div>
+        <AppointmentFormFields
+          selectedClientId={selectedClientId}
+          onClientChange={setSelectedClientId}
+          selectedServiceId={selectedServiceId}
+          onServiceChange={setSelectedServiceId}
+          date={date}
+          onDateChange={setDate}
+          time={time}
+          onTimeChange={setTime}
+          notes={notes}
+          onNotesChange={setNotes}
+          clients={clients}
+          services={activeServices}
+        />
 
         <Button fullWidth onClick={handleSave} disabled={saving || !selectedClientId || !selectedServiceId}>
           {saving ? 'Salvataggio...' : 'Conferma Appuntamento'}
         </Button>
       </div>
     </Modal>
+  );
+}
+
+function EditAppointmentModal({
+  isOpen,
+  appointment,
+  onClose,
+  onDelete,
+  services,
+  clients,
+}: {
+  isOpen: boolean;
+  appointment: Appointment | null;
+  onClose: () => void;
+  onDelete: (id: string) => Promise<void>;
+  services: Service[];
+  clients: Client[];
+}) {
+  const { firebaseUser } = useAuth();
+  const [selectedClientId, setSelectedClientId] = useState('');
+  const [selectedServiceId, setSelectedServiceId] = useState('');
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
+  const [notes, setNotes] = useState('');
+  const [status, setStatus] = useState<Appointment['status']>('confirmed');
+  const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  // Pre-fill form when editing
+  useEffect(() => {
+    if (appointment && isOpen) {
+      setSelectedClientId(appointment.clientId || '');
+      setSelectedServiceId(appointment.serviceId || '');
+      const d = new Date(appointment.startTime);
+      setDate(d.toISOString().split('T')[0]);
+      setTime(`${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`);
+      setNotes(appointment.notes || '');
+      setStatus(appointment.status);
+      setConfirmDelete(false);
+    }
+  }, [appointment, isOpen]);
+
+  const selectedService = services.find((s) => s.id === selectedServiceId);
+  const client = clients.find((c) => c.id === selectedClientId);
+  const activeServices = services.filter((s) => s.isActive);
+
+  const handleUpdate = async () => {
+    if (!firebaseUser?.uid || !appointment?.id || !selectedClientId || !selectedServiceId || !date || !time) return;
+    setSaving(true);
+    try {
+      const startTime = new Date(`${date}T${time}`);
+      const endTime = new Date(startTime.getTime() + (selectedService?.duration || 30) * 60000);
+
+      await updateDoc(doc(db, 'appointments', appointment.id), {
+        clientId: client?.id || '',
+        clientName: client?.name || '',
+        clientPhone: client?.phone || '',
+        serviceId: selectedService?.id || '',
+        serviceName: selectedService?.name || '',
+        duration: selectedService?.duration || 30,
+        price: selectedService?.price || 0,
+        startTime: Timestamp.fromDate(startTime),
+        endTime: Timestamp.fromDate(endTime),
+        status,
+        notes,
+      });
+      onClose();
+    } catch (err) {
+      console.error('Error updating appointment:', err);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!appointment?.id) return;
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      return;
+    }
+    setDeleting(true);
+    await onDelete(appointment.id);
+    setDeleting(false);
+  };
+
+  if (!appointment) return null;
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} title="Modifica Appuntamento">
+      <div className="space-y-4">
+        <AppointmentFormFields
+          selectedClientId={selectedClientId}
+          onClientChange={setSelectedClientId}
+          selectedServiceId={selectedServiceId}
+          onServiceChange={setSelectedServiceId}
+          date={date}
+          onDateChange={setDate}
+          time={time}
+          onTimeChange={setTime}
+          notes={notes}
+          onNotesChange={setNotes}
+          clients={clients}
+          services={activeServices}
+        />
+
+        {/* Status */}
+        <div>
+          <label className="block text-sm font-medium text-text-dark mb-1.5">Stato</label>
+          <select
+            className="input-field"
+            value={status}
+            onChange={(e) => setStatus(e.target.value as Appointment['status'])}
+          >
+            <option value="confirmed">Confermato</option>
+            <option value="completed">Completato</option>
+            <option value="cancelled">Cancellato</option>
+            <option value="no-show">Non presentato</option>
+          </select>
+        </div>
+
+        {/* Summary */}
+        {selectedService && client && (
+          <div className="bg-[var(--primary-50)] rounded-xl p-3 text-sm">
+            <p className="font-medium text-text-dark">Riepilogo</p>
+            <p className="text-text-muted mt-1">
+              {client.name} — {selectedService.name}<br />
+              {time} — {formatCurrency(selectedService.price)}
+              <span className="text-text-dim"> · {selectedService.duration}min</span>
+            </p>
+          </div>
+        )}
+
+        {/* Action buttons */}
+        <div className="flex gap-3">
+          <Button
+            variant={confirmDelete ? 'danger' : 'secondary'}
+            className="flex-1"
+            onClick={handleDelete}
+            disabled={deleting}
+          >
+            {deleting ? 'Eliminazione...' : confirmDelete ? (
+              <>Conferma eliminazione</>
+            ) : (
+              <><Trash2 className="w-4 h-4 mr-1" /> Elimina</>
+            )}
+          </Button>
+          <Button
+            className="flex-1"
+            onClick={handleUpdate}
+            disabled={saving || !selectedClientId || !selectedServiceId}
+          >
+            {saving ? 'Salvataggio...' : <><Pencil className="w-4 h-4 mr-1" /> Salva</>}
+          </Button>
+        </div>
+      </div>
+    </Modal>
+  );
+}
+
+/** Shared form fields used by both Add and Edit modals */
+function AppointmentFormFields({
+  selectedClientId,
+  onClientChange,
+  selectedServiceId,
+  onServiceChange,
+  date,
+  onDateChange,
+  time,
+  onTimeChange,
+  notes,
+  onNotesChange,
+  clients,
+  services,
+}: {
+  selectedClientId: string;
+  onClientChange: (v: string) => void;
+  selectedServiceId: string;
+  onServiceChange: (v: string) => void;
+  date: string;
+  onDateChange: (v: string) => void;
+  time: string;
+  onTimeChange: (v: string) => void;
+  notes: string;
+  onNotesChange: (v: string) => void;
+  clients: Client[];
+  services: Service[];
+}) {
+  return (
+    <>
+      {/* Select client */}
+      <div>
+        <label className="block text-sm font-medium text-text-dark mb-1.5">Cliente</label>
+        <select
+          className="input-field"
+          value={selectedClientId}
+          onChange={(e) => onClientChange(e.target.value)}
+        >
+          <option value="">Seleziona cliente...</option>
+          {clients.map((c) => (
+            <option key={c.id} value={c.id}>{c.name} — {c.phone}</option>
+          ))}
+        </select>
+      </div>
+
+      {/* Select service */}
+      <div>
+        <label className="block text-sm font-medium text-text-dark mb-1.5">Servizio</label>
+        <select
+          className="input-field"
+          value={selectedServiceId}
+          onChange={(e) => onServiceChange(e.target.value)}
+        >
+          <option value="">Seleziona servizio...</option>
+          {services.map((s) => (
+            <option key={s.id} value={s.id}>
+              {s.name} — {s.duration}min — {formatCurrency(s.price)}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Date and time */}
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <label className="block text-sm font-medium text-text-dark mb-1.5">Data</label>
+          <input
+            type="date"
+            className="input-field"
+            value={date}
+            onChange={(e) => onDateChange(e.target.value)}
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-text-dark mb-1.5">Ora</label>
+          <input
+            type="time"
+            step="900"
+            className="input-field"
+            value={time}
+            onChange={(e) => onTimeChange(e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-text-dark mb-1.5">Note (opzionale)</label>
+        <textarea
+          className="input-field min-h-[60px] resize-none"
+          value={notes}
+          onChange={(e) => onNotesChange(e.target.value)}
+          placeholder="Indicazioni, richieste speciali..."
+        />
+      </div>
+    </>
   );
 }
