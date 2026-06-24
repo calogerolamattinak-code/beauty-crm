@@ -1,0 +1,19 @@
+{
+  "name": "beauty-crm-functions",
+  "version": "1.0.0",
+  "description": "Beauty CRM — Firebase Cloud Functions",
+  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "deploy": "firebase deploy --only functions"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.10.0",
+    "firebase-functions": "^7.2.5",
+    "stripe": "^22.2.3"
+  },
+  "private": true
+}

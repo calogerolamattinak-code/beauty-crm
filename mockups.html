@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beauty CRM — Temi</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f5f5f5; padding: 40px 20px; -webkit-font-smoothing: antialiased; }
+  .grid { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+  .card {
+    width: 320px; background: white; border-radius: 24px; overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+  }
+  .preview { height: 400px; position: relative; overflow: hidden; }
+  .info { padding: 16px 20px; }
+  .info h2 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .info p { font-size: 12px; color: #666; margin-bottom: 10px; }
+  .palette { display: flex; gap: 6px; }
+  .palette span { width: 24px; height: 24px; border-radius: 8px; }
+  .tag {
+    display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px;
+    border-radius: 6px; margin-bottom: 8px;
+  }
+  .status-bar { display: flex; justify-content: space-between; padding: 16px 16px 0; font-size: 11px; font-weight: 600; }
+
+  /* Tema Verde 🌿 (default) */
+  .theme-green { --primary: #4CAF50; --primary-light: #E8F5E9; --gradient: linear-gradient(135deg, #66BB6A, #2E7D32); }
+  .theme-green .preview { background: linear-gradient(180deg, #F0FFF0 0%, #E8F5E9 100%); }
+  .theme-green .tag { background: #E8F5E9; color: #2E7D32; }
+  .theme-green .demo-grad { background: linear-gradient(135deg, #66BB6A, #2E7D32); }
+  .theme-green .demo-btn { background: #E8F5E9; color: #2E7D32; border: 1px solid #C8E6C9; }
+  .theme-green .stats { background: white; }
+  .theme-green .demo-bar { background: linear-gradient(90deg, #4CAF50 0%, #A5D6A7 100%); }
+
+  /* Tema Rosa 💕 */
+  .theme-rose { --primary: #E8537E; --primary-light: #FFF0F5; --gradient: linear-gradient(135deg, #FF6B9D, #C44A8C); }
+  .theme-rose .preview { background: linear-gradient(180deg, #FFF5F0 0%, #FFF0F5 100%); }
+  .theme-rose .tag { background: #FFF0F5; color: #C44A8C; }
+  .theme-rose .demo-grad { background: linear-gradient(135deg, #FF6B9D, #C44A8C); }
+  .theme-rose .demo-btn { background: #FFF0F5; color: #C44A8C; border: 1px solid #FFE0EA; }
+  .theme-rose .stats { background: white; }
+  .theme-rose .demo-bar { background: linear-gradient(90deg, #E8537E 0%, #FFB8D0 100%); }
+
+  /* Tema Viola 💜 */
+  .theme-purple { --primary: #9C27B0; --primary-light: #F3E5F5; --gradient: linear-gradient(135deg, #AB47BC, #6A1B9A); }
+  .theme-purple .preview { background: linear-gradient(180deg, #F8F4FF 0%, #F3E5F5 100%); }
+  .theme-purple .tag { background: #F3E5F5; color: #6A1B9A; }
+  .theme-purple .demo-grad { background: linear-gradient(135deg, #AB47BC, #6A1B9A); }
+  .theme-purple .demo-btn { background: #F3E5F5; color: #6A1B9A; border: 1px solid #E1BEE7; }
+  .theme-purple .stats { background: white; }
+  .theme-purple .demo-bar { background: linear-gradient(90deg, #9C27B0 0%, #CE93D8 100%); }
+
+  /* Demo card */
+  .demo-card { background: white; border-radius: 16px; padding: 12px 16px; margin: 12px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; align-items: center; gap: 10px; }
+  .demo-dot { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 12px; }
+  .demo-grad { border-radius: 12px; padding: 10px 16px; margin: 8px 16px; text-align: center; color: white; font-weight: 600; font-size: 13px; }
+  .demo-btn { border-radius: 10px; padding: 8px 14px; font-size: 12px; font-weight: 600; }
+  .demo-bar-parent { padding: 0 16px; margin: 8px 0; }
+  .demo-bar { height: 6px; border-radius: 3px; margin-bottom: 4px; }
+  .demo-bar-label { display: flex; justify-content: space-between; font-size: 10px; color: #666; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<h1 style="text-align:center;font-size:28px;font-weight:800;margin-bottom:8px">🎨 Beauty CRM — 3 Temi</h1>
+<p style="text-align:center;font-size:14px;color:#666;margin-bottom:40px">Scegli il tema che preferisci dalle Impostazioni</p>
+
+<div class="grid">
+
+  <!-- Verde (default) -->
+  <div class="card theme-green">
+    <div class="preview">
+      <div class="status-bar"><span>9:41</span><span>🔋📶</span></div>
+      <div style="padding:8px 16px;display:flex;justify-content:space-between;align-items:center">
+        <div><span style="font-size:11px;color:#666">📅 martedì 23 giu</span></div>
+        <span class="demo-btn">+ Nuovo</span>
+      </div>
+      <div style="display:flex;gap:8px;margin:8px 16px">
+        <div class="stats" style="flex:1;border-radius:12px;padding:8px;text-align:center">
+          <p style="font-size:18px;font-weight:800;color:var(--primary)">5</p>
+          <p style="font-size:9px;color:#666">Oggi</p>
+        </div>
+        <div class="stats" style="flex:1;border-radius:12px;padding:8px;text-align:center">
+          <p style="font-size:18px;font-weight:800;color:#4CAF50">3</p>
+          <p style="font-size:9px;color:#666">Fatto</p>
+        </div>
+        <div class="stats" style="flex:1;border-radius:12px;padding:8px;text-align:center">
+          <p style="font-size:18px;font-weight:800;color:var(--primary)">€245</p>
+          <p style="font-size:9px;color:#666">Previsto</p>
+        </div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-dot" style="background:var(--primary)">MR</div>
+        <div style="flex:1"><p style="font-size:12px;font-weight:600">Maria Rossi</p><p style="font-size:10px;color:#666">Taglio + Piega · <span style="color:var(--primary);font-weight:600">€45</span></p></div>
+        <span>📞</span>
+      </div>
+      <div class="demo-card">
+        <div class="demo-dot" style="background:#81C784">AV</div>
+        <div style="flex:1"><p style="font-size:12px;font-weight:600">Anna Verdi</p><p style="font-size:10px;color:#666">Manicure · <span style="color:var(--primary);font-weight:600">€35</span></p></div>
+        <span>📞</span>
+      </div>
+      <div class="demo-grad">Attiva Premium — 9,90€/mese</div>
+    </div>
+    <div class="info">
+      <span class="tag">🌿 DEFAULT</span>
+      <h2>Verde</h2>
+      <p>Naturale, fresco, rilassante</p>
+      <div class="palette">
+        <span style="background:#4CAF50"></span>
+        <span style="background:#66BB6A"></span>
+        <span style="background:#81C784"></span>
+        <span style="background:#E8F5E9"></span>
+        <span style="background:#F0FFF0"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rosa -->
+  <div class="card theme-rose">
+    <div class="preview">
+      <div class="status-bar"><span>9:41</span><span>🔋📶</span></div>
+      <div style="padding:8px 16px;display:flex;justify-content:space-between;align-items:center">
+        <div><span style="font-size:11px;color:#666">📅 martedì 23 giu</span></div>
+        <span class="demo-btn">+ Nuovo</span>
+      </div>
+      <div style="display:flex;gap:8px;margin:8px 16px">
+        <div class="stats" style="flex:1;border-radius:12px;padding:8px;text-align:center">
+          <p style="font-size:18px;font-weight:800;color:var(--primary)">5</p>
+          <p style="font-size:9px;color:#666">Oggi</p>
+        </div>
+        <div class="stats" style="flex:1;border-radius:12px;padding:8px;text-align:center">
+          <p style="font-size:18px;font-weight:800;color:#4CAF50">3</p>
+          <p style="font-size:9px;color:#666">Fatto</p>
+        </div>
+        <div class="stats" style="flex:1;border-radius:12px;padding:8px;text-align:center">
+          <p style="font-size:18px;font-weight:800;color:var(--primary)">€245</p>
+          <p style="font-size:9px;color:#666">Previsto</p>
+        </div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-dot" style="background:var(--primary)">MR</div>
+        <div style="flex:1"><p style="font-size:12px;font-weight:600">Maria Rossi</p><p style="font-size:10px;color:#666">Taglio + Piega · <span style="color:var(--primary);font-weight:600">€45</span></p></div>
+        <span>📞</span>
+      </div>
+      <div class="demo-card">
+        <div class="demo-dot" style="background:#FFB8D0">AV</div>
+        <div style="flex:1"><p style="font-size:12px;font-weight:600">Anna Verdi</p><p style="font-size:10px;color:#666">Manicure · <span style="color:var(--primary);font-weight:600">€35</span></p></div>
+        <span>📞</span>
+      </div>
+      <div class="demo-grad">Attiva Premium — 9,90€/mese</div>
+    </div>
+    <div class="info">
+      <span class="tag">💕</span>
+      <h2>Rosa</h2>
+      <p>Femminile, beauty, caldo</p>
+      <div class="palette">
+        <span style="background:#E8537E"></span>
+        <span style="background:#FF6B9D"></span>
+        <span style="background:#FFB8D0"></span>
+        <span style="background:#FFF0F5"></span>
+        <span style="background:#FFFAF7"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Viola -->
+  <div class="card theme-purple">
+    <div class="preview">
+      <div class="status-bar"><span>9:41</span><span>🔋📶</span></div>
+      <div style="padding:8px 16px;display:flex;justify-content:space-between;align-items:center">
+        <div><span style="font-size:11px;color:#666">📅 martedì 23 giu</span></div>
+        <span class="demo-btn">+ Nuovo</span>
+      </div>
+      <div style="display:flex;gap:8px;margin:8px 16px">
+        <div class="stats" style="flex:1;border-radius:12px;padding:8px;text-align:center">
+          <p style="font-size:18px;font-weight:800;color:var(--primary)">5</p>
+          <p style="font-size:9px;color:#666">Oggi</p>
+        </div>
+        <div class="stats" style="flex:1;border-radius:12px;padding:8px;text-align:center">
+          <p style="font-size:18px;font-weight:800;color:#4CAF50">3</p>
+          <p style="font-size:9px;color:#666">Fatto</p>
+        </div>
+        <div class="stats" style="flex:1;border-radius:12px;padding:8px;text-align:center">
+          <p style="font-size:18px;font-weight:800;color:var(--primary)">€245</p>
+          <p style="font-size:9px;color:#666">Previsto</p>
+        </div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-dot" style="background:var(--primary)">MR</div>
+        <div style="flex:1"><p style="font-size:12px;font-weight:600">Maria Rossi</p><p style="font-size:10px;color:#666">Taglio + Piega · <span style="color:var(--primary);font-weight:600">€45</span></p></div>
+        <span>📞</span>
+      </div>
+      <div class="demo-card">
+        <div class="demo-dot" style="background:#CE93D8">AV</div>
+        <div style="flex:1"><p style="font-size:12px;font-weight:600">Anna Verdi</p><p style="font-size:10px;color:#666">Manicure · <span style="color:var(--primary);font-weight:600">€35</span></p></div>
+        <span>📞</span>
+      </div>
+      <div class="demo-grad">Attiva Premium — 9,90€/mese</div>
+    </div>
+    <div class="info">
+      <span class="tag">💜</span>
+      <h2>Viola</h2>
+      <p>Elegante, sofisticato, moderno</p>
+      <div class="palette">
+        <span style="background:#9C27B0"></span>
+        <span style="background:#AB47BC"></span>
+        <span style="background:#CE93D8"></span>
+        <span style="background:#F3E5F5"></span>
+        <span style="background:#F8F4FF"></span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="text-align:center;margin-top:40px">
+  <p style="font-size:14px;color:#666">💡 Vai su <strong>Impostazioni → Tema</strong> per cambiare colore</p>
+  <p style="font-size:12px;color:#999;margin-top:4px">Il tema si salva automaticamente e resta alla prossima visita</p>
+</div>
+
+</body>
+</html>
