@@ -1,15 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-const { defineSecret, defineString } = require('firebase-functions/params');
 const { onSchedule } = require('firebase-functions/v2/scheduler');
-
-// Parametri configurabili tramite variabili d'ambiente
-const STRIPE_PRICE_MONTHLY = defineString('STRIPE_PRICE_MONTHLY');
-const APP_URL = defineString('APP_URL');
-
-// Segreti (crittografati)
-const STRIPE_SECRET_KEY = defineSecret('STRIPE_SECRET_KEY');
-const STRIPE_WEBHOOK_SECRET = defineSecret('STRIPE_WEBHOOK_SECRET');
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -18,7 +9,6 @@ const db = admin.firestore();
  * Crea una sessione Stripe Checkout per l'abbonamento Premium
  */
 exports.createCheckoutSession = functions.https.onCall(
-  { secrets: [STRIPE_SECRET_KEY] },
   async (data, context) => {
     if (!context.auth) {
       throw new functions.https.HttpsError(
@@ -31,23 +21,44 @@ exports.createCheckoutSession = functions.https.onCall(
     const userData = userDoc.data();
     const email = userData?.email || context.auth.token.email;
 
-    const stripe = require('stripe')(STRIPE_SECRET_KEY.value());
+    const stripeSecretKey = functions.config().stripe.secret_key;
+    if (!stripeSecretKey) {
+      functions.logger.error('Stripe secret key not configured');
+      throw new functions.https.HttpsError('internal', 'Stripe non configurato');
+    }
 
-    const session = await stripe.checkout.sessions.create({
-      mode: 'subscription',
-      payment_method_types: ['card'],
-      line_items: [{
-        price: data.priceId || STRIPE_PRICE_MONTHLY.value(),
-        quantity: 1,
-      }],
-      customer_email: email,
-      client_reference_id: userId,
-      metadata: { userId },
-      success_url: `${APP_URL.value()}/dashboard?upgrade=success`,
-      cancel_url: `${APP_URL.value()}/settings`,
-    });
+    const stripe = require('stripe')(stripeSecretKey);
 
-    return { url: session.url };
+    const priceId = data.priceId || functions.config().stripe.price_monthly;
+    const appUrl = functions.config().app.url;
+
+    functions.logger.info(`Creating checkout session for user ${userId}, price=${priceId}, appUrl=${appUrl}`);
+
+    try {
+      const session = await stripe.checkout.sessions.create({
+        mode: 'subscription',
+        payment_method_types: ['card'],
+        line_items: [{
+          price: priceId,
+          quantity: 1,
+        }],
+        customer_email: email,
+        client_reference_id: userId,
+        metadata: { userId },
+        success_url: `${appUrl}/dashboard?upgrade=success`,
+        cancel_url: `${appUrl}/settings`,
+      });
+
+      functions.logger.info(`Checkout session created: ${session.id}`);
+      return { url: session.url };
+    } catch (stripeErr) {
+      functions.logger.error('Stripe error:', stripeErr?.message || stripeErr, {
+        type: stripeErr?.type,
+        code: stripeErr?.code,
+        statusCode: stripeErr?.statusCode,
+      });
+      throw new functions.https.HttpsError('internal', `Errore Stripe: ${stripeErr?.message}`);
+    }
   }
 );
 
@@ -55,14 +66,13 @@ exports.createCheckoutSession = functions.https.onCall(
  * Webhook Stripe — chiamato da Stripe dopo eventi di pagamento
  */
 exports.stripeWebhook = functions.https.onRequest(
-  { secrets: [STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET] },
   async (req, res) => {
     const sig = req.headers['stripe-signature'];
-    const stripe = require('stripe')(STRIPE_SECRET_KEY.value());
+    const stripe = require('stripe')(functions.config().stripe.secret_key);
 
     let event;
     try {
-      event = stripe.webhooks.constructEvent(req.rawBody, sig, STRIPE_WEBHOOK_SECRET.value());
+      event = stripe.webhooks.constructEvent(req.rawBody, sig, functions.config().stripe.webhook_secret);
     } catch (err) {
       res.status(400).send(`Webhook Error: ${err.message}`);
       return;

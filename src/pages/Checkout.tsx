@@ -19,7 +19,7 @@ export function Checkout({ onBack, salonName }: CheckoutProps) {
 
   const priceIds: Record<string, string> = {
     monthly: 'price_1TlvY92QeD9NgihgKbtFJ3Ry',
-    yearly: 'price_1TlvY92QeD9NgihgKbtFJ3Ry', // stessa per ora
+    yearly: 'price_1Tm0G22QeD9NgihgqJwc6B58',
   };
 
   const handleUpgrade = async () => {
@@ -32,7 +32,8 @@ export function Checkout({ onBack, salonName }: CheckoutProps) {
       window.location.href = data.url;
     } catch (err) {
       console.error('Checkout error:', err);
-      alert('Errore durante il reindirizzamento a Stripe. Riprova più tardi.');
+      const message = (err as any)?.message || 'Errore durante il reindirizzamento a Stripe. Riprova più tardi.';
+      alert(`Errore: ${message}`);
     } finally {
       setLoading(false);
     }
