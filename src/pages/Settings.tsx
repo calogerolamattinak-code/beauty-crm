@@ -86,7 +86,7 @@ export function Settings({ onGoPremium }: SettingsProps) {
               label="Email"
               value={user?.email || ''}
               disabled
-              className="bg-[#F9F5F5]"
+              className="bg-[var(--bg-card)]"
             />
           </div>
         </Card>
@@ -114,13 +114,13 @@ export function Settings({ onGoPremium }: SettingsProps) {
                     className="w-5 h-5 rounded-lg accent-primary-500"
                   />
                 </label>
-                <div className="bg-success/10 rounded-xl p-4 text-sm">
+                <div className="bg-[var(--success)]/10 rounded-xl p-4 text-sm">
                   ✅ I promemoria WhatsApp sono attivi sul tuo piano Premium
                 </div>
               </>
             ) : (
               <div className="text-center py-2">
-                <div className="w-12 h-12 bg-gold-500/10 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                <div className="w-12 h-12 bg-[var(--gold)]/10 rounded-2xl flex items-center justify-center mx-auto mb-3">
                   <Crown className="w-6 h-6 text-gold-500" />
                 </div>
                 <p className="font-medium text-text-dark mb-1">💬 Promemoria WhatsApp</p>
@@ -156,7 +156,7 @@ export function Settings({ onGoPremium }: SettingsProps) {
                 className={`flex-1 rounded-2xl border-2 p-4 text-center transition-all ${
                   themeName === t.name
                     ? 'border-[var(--primary-500)] bg-[var(--primary-50)]'
-                    : 'border-[var(--border)] bg-white'
+                    : 'border-[var(--border-light)] bg-[var(--bg-card)]'
                 }`}
               >
                 <div

@@ -83,7 +83,7 @@ export function Onboarding() {
             <div
               key={s}
               className={`flex-1 h-1.5 rounded-full transition-all ${
-                s <= step ? 'gradient-primary' : 'bg-[#E0D0D0]'
+                s <= step ? 'gradient-primary' : 'bg-[var(--border-light)]'
               }`}
             />
           ))}
@@ -135,7 +135,7 @@ export function Onboarding() {
                     className={`w-10 h-10 rounded-xl flex items-center justify-center font-medium text-sm transition-all ${
                       workingHours[day].isActive
                         ? 'gradient-primary text-white'
-                        : 'bg-[#F0E8E8] text-text-muted'
+                        : 'bg-[var(--border-light)] text-text-dim'
                     }`}
                   >
                     {DAY_LABELS[day].slice(0, 3)}

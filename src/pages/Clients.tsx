@@ -124,7 +124,7 @@ function ClientCard({ client }: { client: Client }) {
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <a href={`tel:${client.phone}`} className="btn-ghost w-8 h-8 rounded-full bg-primary-50 text-primary-500 flex items-center justify-center">
+        <a href={`tel:${client.phone}`} className="btn-ghost w-8 h-8 rounded-full bg-[var(--primary-50)] text-primary-500 flex items-center justify-center">
           <Phone className="w-3.5 h-3.5" />
         </a>
         <ChevronRight className="w-4 h-4 text-text-muted" />
@@ -208,7 +208,7 @@ function AddClientModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 function EmptyState() {
   return (
     <Card className="text-center py-12">
-      <div className="w-16 h-16 bg-primary-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+      <div className="w-16 h-16 bg-[var(--primary-50)] rounded-2xl flex items-center justify-center mx-auto mb-4">
         <Users className="w-8 h-8 text-primary-500" />
       </div>
       <h3 className="font-bold text-text-dark mb-1">Nessun cliente ancora</h3>
@@ -225,7 +225,7 @@ function LoadingSkeleton() {
   return (
     <div className="animate-pulse space-y-2">
       {[1, 2, 3, 4].map((i) => (
-        <div key={i} className="h-16 bg-[#E0D0D0] rounded-2xl" />
+        <div key={i} className="h-16 bg-[var(--border-light)] rounded-2xl" />
       ))}
     </div>
   );

@@ -5,6 +5,8 @@ import { ThemeProvider } from './hooks/useTheme';
 import { AppLayout } from './components/layout/AppLayout';
 import { Login } from './pages/Login';
 import { Landing } from './pages/Landing';
+import { Terms } from './pages/Terms';
+import { Privacy } from './pages/Privacy';
 import { Onboarding } from './pages/Onboarding';
 import { Dashboard } from './pages/Dashboard';
 import { Calendar } from './pages/Calendar';
@@ -67,6 +69,9 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+
+      <Route path="/termini" element={<Terms />} />
+      <Route path="/privacy" element={<Privacy />} />
 
       <Route path="/login" element={
         firebaseUser ? <Navigate to="/dashboard" replace /> : <Login />

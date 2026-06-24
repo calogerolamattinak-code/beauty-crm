@@ -113,7 +113,7 @@ export function Services() {
                     className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
                       service.isActive
                         ? 'bg-success/10 text-success'
-                        : 'bg-[#F0E8E8] text-text-muted'
+                        : 'bg-[var(--border-light)] text-text-dim'
                     }`}
                   >
                     {service.isActive ? 'Attivo' : 'Disattivo'}
@@ -226,7 +226,7 @@ function AddServiceModal({
 function EmptyState() {
   return (
     <Card className="text-center py-12">
-      <div className="w-16 h-16 bg-primary-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+      <div className="w-16 h-16 bg-[var(--primary-50)] rounded-2xl flex items-center justify-center mx-auto mb-4">
         <Scissors className="w-8 h-8 text-primary-500" />
       </div>
       <h3 className="font-bold text-text-dark mb-1">Nessun servizio ancora</h3>
@@ -243,7 +243,7 @@ function LoadingSkeleton() {
   return (
     <div className="animate-pulse space-y-2">
       {[1, 2, 3].map((i) => (
-        <div key={i} className="h-16 bg-[#E0D0D0] rounded-2xl" />
+        <div key={i} className="h-16 bg-[var(--border-light)] rounded-2xl" />
       ))}
     </div>
   );

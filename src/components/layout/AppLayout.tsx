@@ -21,7 +21,7 @@ export function AppLayout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen bg-bg-soft pb-20 md:pb-0 md:pl-20">
       {/* Desktop sidebar */}
-      <nav className="hidden md:flex fixed left-0 top-0 bottom-0 w-20 bg-white border-r border-[#F0E8E8] flex-col items-center py-6 gap-2 z-40">
+      <nav className="hidden md:flex fixed left-0 top-0 bottom-0 w-20 bg-[var(--bg-card)] border-r border-[var(--border-light)] flex-col items-center py-6 gap-2 z-40">
         <div className="w-10 h-10 gradient-primary rounded-xl flex items-center justify-center mb-4">
           <Scissors className="w-5 h-5 text-white" />
         </div>
@@ -35,7 +35,7 @@ export function AppLayout({ children }: LayoutProps) {
               className={`w-14 h-14 rounded-2xl flex flex-col items-center justify-center gap-0.5 transition-all ${
                 isActive
                   ? 'gradient-primary text-white shadow-md'
-                  : 'text-text-muted hover:bg-primary-50 hover:text-primary-600'
+                  : 'text-text-muted hover:bg-[var(--primary-50)] hover:text-primary-500'
               }`}
               title={item.label}
             >
@@ -52,7 +52,7 @@ export function AppLayout({ children }: LayoutProps) {
       </main>
 
       {/* Mobile bottom tab bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-[#F0E8E8] z-40 safe-area-bottom">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--bg-card)] border-t border-[var(--border-light)] z-40 safe-area-bottom">
         <div className="flex items-center justify-around px-2 py-1">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;

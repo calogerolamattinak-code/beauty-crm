@@ -9,14 +9,12 @@ import {
   ChevronDown,
   LayoutDashboard,
   Scissors,
-  Sparkle,
 } from 'lucide-react';
 
 const navLinks = [
   { label: 'Funzionalità', href: '#features' },
-  { label: 'AI Stylist', href: '#ai-stylist' },
   { label: 'FAQ', href: '#faq' },
-  { label: 'Scrivici', href: '#contact' },
+  { label: 'Contatti', href: '#contact' },
 ];
 
 const statsCards = [
@@ -102,33 +100,27 @@ export function Landing() {
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center relative z-10">
           {/* Left: Text */}
           <div className="space-y-6">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border border-purple-500/20 bg-purple-500/5 text-purple-300">
-              <Sparkles className="w-3.5 h-3.5" />
-              Powered by AI STYLIST
-            </div>
-
             {/* Headline */}
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight">
               <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
-                Il gestionale che
+                Il gestionale
               </span>
               <br />
-              <span className="text-orange-500">fa</span>
+              <span className="text-orange-500">completo</span>
               <br />
               <span className="bg-gradient-to-r from-pink-500 to-purple-400 bg-clip-text text-transparent">
-                crescere il salone
+                per il tuo salone
               </span>
             </h1>
 
             {/* Subheadline */}
             <h2 className="text-xl md:text-2xl text-orange-400/80 font-medium">
-              Un software completo, non solo un'agenda
+              Agenda, clienti, cassa, magazzino — tutto in un unico software
             </h2>
 
             {/* Body */}
             <p className="text-gray-400 text-base md:text-lg max-w-lg leading-relaxed">
-              Agenda, clienti, cassa, magazzino e AI Stylist — tutto in un unico software. Semplice, veloce, pensato per i saloni italiani.
+              Semplice, veloce, pensato per i saloni italiani. Gestisci appuntamenti, clienti, incassi e scorte senza complicazioni.
             </p>
 
             {/* CTA Buttons */}
@@ -222,16 +214,6 @@ export function Landing() {
               </div>
             </div>
 
-            {/* Floating popup: AI Stylist */}
-            <div className="absolute -top-3 -right-3 rounded-xl px-3 py-2 shadow-lg border border-purple-500/10 backdrop-blur-sm"
-              style={{ background: 'rgba(26,26,46,0.95)' }}>
-              <p className="text-[10px] text-gray-400 mb-0.5">AI Stylist</p>
-              <div className="flex items-center gap-1.5">
-                <Sparkle className="w-3 h-3 text-pink-400" />
-                <span className="text-xs font-semibold text-pink-400">Attivo</span>
-              </div>
-            </div>
-
             {/* Floating popup: Appointment */}
             <div className="absolute -bottom-2 -left-4 rounded-xl px-3 py-2 shadow-lg border border-blue-500/10 backdrop-blur-sm"
               style={{ background: 'rgba(26,26,46,0.95)' }}>
@@ -271,7 +253,7 @@ export function Landing() {
               { icon: Euro, title: 'Cassa e pagamenti', desc: 'Incassa in modo semplice, emetti ricevute e tieni traccia di ogni transazione.' },
               { icon: Scissors, title: 'Servizi e listino', desc: 'Crea il tuo catalogo servizi con durata, prezzo e categorie personalizzate.' },
               { icon: Package, title: 'Magazzino', desc: 'Tieni sotto controllo le scorte di prodotti e ricevi notifiche quando finiscono.' },
-              { icon: Sparkles, title: 'AI Stylist', desc: 'Consigli intelligenti per i tuoi clienti basati sulle loro preferenze e cronologia.' },
+              { icon: Sparkles, title: 'Statistiche', desc: 'Visualizza l\'andamento del tuo salone con grafici chiari e report dettagliati.' },
             ].map((feature, i) => (
               <div
                 key={i}
@@ -323,6 +305,14 @@ export function Landing() {
               <path d="M14 6c-2 0-4 2-4 4s2 4 4 4 4-2 4-4-2-4-4-4z" fill="#EC4899" opacity="0.6"/>
             </svg>
             <span className="text-sm font-semibold">Beauty CRM</span>
+          </div>
+          <div className="flex items-center gap-6">
+            <button onClick={() => navigate('/termini')} className="text-xs text-gray-500 hover:text-gray-300 transition-colors">
+              Termini e Condizioni
+            </button>
+            <button onClick={() => navigate('/privacy')} className="text-xs text-gray-500 hover:text-gray-300 transition-colors">
+              Privacy Policy
+            </button>
           </div>
           <p className="text-xs text-gray-500">© 2026 Beauty CRM. Tutti i diritti riservati.</p>
         </div>

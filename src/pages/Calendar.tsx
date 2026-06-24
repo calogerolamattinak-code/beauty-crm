@@ -160,11 +160,11 @@ export function Calendar() {
       </div>
 
       {/* Calendar grid - scrollable */}
-      <div className="overflow-auto max-h-[65vh] rounded-2xl bg-white border border-[#F0E8E8]">
+      <div className="overflow-auto max-h-[65vh] rounded-2xl bg-[var(--bg-card)] border border-[var(--border-light)]">
         <div className="min-w-[600px]">
           {/* Time grid */}
           {HOURS.map((hour) => (
-            <div key={hour} className="grid grid-cols-[60px_1fr_1fr_1fr_1fr_1fr_1fr_1fr] border-b border-[#F0E8E8]">
+            <div key={hour} className="grid grid-cols-[60px_1fr_1fr_1fr_1fr_1fr_1fr_1fr] border-b border-[var(--border-light)]">
               {/* Time label */}
               <div className="text-xs text-text-muted py-3 px-2 text-right border-r border-[#F0E8E8]">
                 {hour.toString().padStart(2, '0')}:00
@@ -175,8 +175,8 @@ export function Calendar() {
                 return (
                   <div
                     key={dayIdx}
-                    className={`min-h-[60px] border-r border-[#F0E8E8] p-1 relative cursor-pointer hover:bg-primary-50/50 transition-all ${
-                      isToday(date) ? 'bg-primary-50/30' : ''
+                    className={`min-h-[60px] border-r border-[#F0E8E8] p-1 relative cursor-pointer hover:bg-[var(--primary-50)] transition-all ${
+                      isToday(date) ? 'bg-[var(--primary-50)]/50' : ''
                     }`}
                     onClick={() => {
                       setShowModal(true);
@@ -324,7 +324,7 @@ function AddAppointmentModal({
         </div>
 
         {selectedService && (
-          <div className="bg-primary-50 rounded-xl p-3 text-sm">
+          <div className="bg-[var(--primary-50)] rounded-xl p-3 text-sm">
             <p className="font-medium text-text-dark">Riepilogo</p>
             <p className="text-text-muted mt-1">
               {client?.name} — {selectedService.name}<br />

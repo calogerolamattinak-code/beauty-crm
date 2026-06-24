@@ -61,7 +61,7 @@ export function Login() {
 
       {/* Form section */}
       <div className="flex-1 px-6 -mt-8">
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="bg-[var(--bg-card)] border border-[var(--border-light)] rounded-2xl shadow-xl p-6 space-y-4">
           {error && (
             <div className="bg-danger/10 text-danger text-sm p-3 rounded-xl">
               {error}
@@ -116,10 +116,10 @@ export function Login() {
 
           <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-[#E0D0D0]" />
+              <div className="w-full border-t border-[var(--border-light)]" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-3 text-text-muted">oppure</span>
+              <span className="bg-[var(--bg-card)] px-3 text-text-muted">oppure</span>
             </div>
           </div>
 

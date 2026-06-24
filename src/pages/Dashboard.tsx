@@ -141,7 +141,7 @@ function AppointmentCard({ appointment }: { appointment: Appointment }) {
       {/* Time column */}
       <div className="w-16 flex flex-col items-center pt-2">
         <span className="text-sm font-bold text-text-dark">{formatTime(appointment.startTime)}</span>
-        <div className="flex-1 w-px bg-[#E0D0D0] my-1" />
+        <div className="flex-1 w-px bg-[var(--border-light)] my-1" />
         <span className="text-xs text-text-muted">{appointment.duration}min</span>
       </div>
 
@@ -157,7 +157,7 @@ function AppointmentCard({ appointment }: { appointment: Appointment }) {
           <div className="flex flex-col gap-2">
             <a
               href={`tel:${appointment.clientPhone}`}
-              className="btn-ghost w-9 h-9 rounded-full bg-primary-50 text-primary-500 flex items-center justify-center"
+              className="btn-ghost w-9 h-9 rounded-full bg-[var(--primary-50)] text-primary-500 flex items-center justify-center"
             >
               <Phone className="w-4 h-4" />
             </a>
@@ -172,7 +172,7 @@ function AppointmentCard({ appointment }: { appointment: Appointment }) {
 function EmptyState() {
   return (
     <Card className="text-center py-12">
-      <div className="w-16 h-16 bg-primary-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+      <div className="w-16 h-16 bg-[var(--primary-50)] rounded-2xl flex items-center justify-center mx-auto mb-4">
         <CalendarDays className="w-8 h-8 text-primary-500" />
       </div>
       <h3 className="font-bold text-text-dark mb-1">Nessun appuntamento oggi</h3>
@@ -188,15 +188,15 @@ function EmptyState() {
 function LoadingSkeleton() {
   return (
     <div className="animate-pulse space-y-4">
-      <div className="h-8 w-48 bg-[#E0D0D0] rounded-lg" />
+      <div className="h-8 w-48 bg-[var(--border-light)] rounded-lg" />
       <div className="grid grid-cols-3 gap-3">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-20 bg-[#E0D0D0] rounded-2xl" />
+          <div key={i} className="h-20 bg-[var(--border-light)] rounded-2xl" />
         ))}
       </div>
       <div className="space-y-3">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-24 bg-[#E0D0D0] rounded-2xl" />
+          <div key={i} className="h-24 bg-[var(--border-light)] rounded-2xl" />
         ))}
       </div>
     </div>

@@ -1,34 +1,37 @@
 @import "tailwindcss";
 
-/* Beauty CRM — Design System with CSS Custom Properties */
+/* Beauty CRM — Dark Design System */
 
 @theme {
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
 
-/* ─── CSS Variables (set by JS → useTheme hook) ─── */
+/* ─── CSS Variables (Dark Theme Defaults) ─── */
 :root {
-  --primary-50: #FFF0F5;
-  --primary-100: #FFE0EA;
-  --primary-200: #FFB8D0;
-  --primary-300: #FF8BB5;
-  --primary-400: #FF6B9D;
-  --primary-500: #E8537E;
-  --primary-600: #C44A8C;
-  --primary-700: #9E3A6F;
-  --primary-800: #7A2D57;
-  --primary-900: #5A2040;
-  --gradient-primary: linear-gradient(135deg, #FF6B9D 0%, #C44A8C 100%);
-  --gold: #D4A853;
-  --gold-dark: #C49A3C;
-  --bg-warm: #FFFAF7;
-  --bg-soft: #FFF5F0;
-  --text-dark: #2D1B1B;
-  --text-muted: #8A7B7B;
+  --primary-50: #2D1B3D;
+  --primary-100: #3D2055;
+  --primary-200: #6B2F8A;
+  --primary-300: #9C4DB8;
+  --primary-400: #B86CE0;
+  --primary-500: #D48AF0;
+  --primary-600: #EC4899;
+  --primary-700: #A855F7;
+  --primary-800: #7C3AED;
+  --primary-900: #5B21B6;
+  --gradient-primary: linear-gradient(135deg, #EC4899 0%, #A855F7 100%);
+  --gold: #F59E0B;
+  --gold-dark: #D97706;
+  --bg-warm: #050510;
+  --bg-soft: #0a0a1a;
+  --bg-card: #12122a;
+  --text-dark: #F1F1F6;
+  --text-muted: #8A8A9E;
+  --text-dim: #5A5A72;
   --success: #4CAF50;
   --warning: #FF9800;
   --danger: #EF5350;
-  --border: #F0E8E8;
+  --border: rgba(255,255,255,0.06);
+  --border-light: rgba(255,255,255,0.1);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -49,16 +52,16 @@
 }
 .btn-primary:hover {
   opacity: 0.9;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 .btn-primary:active {
   transform: scale(0.98);
 }
 
 .btn-secondary {
-  background: white;
+  background: var(--bg-card);
   color: var(--text-dark);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-light);
   font-weight: 500;
   border-radius: 0.75rem;
   padding: 0.75rem 1.5rem;
@@ -66,7 +69,7 @@
   cursor: pointer;
 }
 .btn-secondary:hover {
-  border-color: var(--primary-300);
+  border-color: var(--primary-400);
   color: var(--primary-500);
 }
 
@@ -85,9 +88,10 @@
 
 .input-field {
   width: 100%;
-  background: white;
+  background: var(--bg-card);
+  color: var(--text-dark);
   border-radius: 0.75rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-light);
   padding: 0.75rem 1rem;
   font-size: 0.875rem;
   transition: all 0.2s;
@@ -95,13 +99,16 @@
 }
 .input-field:focus {
   outline: none;
-  border-color: var(--primary-300);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-300) 30%, transparent);
+  border-color: var(--primary-400);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-400) 20%, transparent);
+}
+.input-field::placeholder {
+  color: var(--text-dim);
 }
 
 select.input-field {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238A7B7B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238A8A9E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
   padding-right: 2.5rem;
@@ -130,7 +137,7 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
+  background: var(--border-light);
   border-radius: 3px;
 }
 
@@ -153,4 +160,16 @@ body {
 /* Safe area for mobile */
 .safe-area-bottom {
   padding-bottom: env(safe-area-inside-bottom, 0px);
+}
+
+/* Appointment card */
+.appointment-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 1rem;
+  padding: 0.75rem;
+  transition: all 0.2s;
+}
+.appointment-card:hover {
+  border-color: var(--primary-400/30);
 }
