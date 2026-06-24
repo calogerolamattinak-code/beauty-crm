@@ -11,7 +11,6 @@ import { Clients } from './pages/Clients';
 import { Services } from './pages/Services';
 import { Settings } from './pages/Settings';
 import { Checkout } from './pages/Checkout';
-import { Scissors } from 'lucide-react';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { firebaseUser, loading } = useAuth();
@@ -20,9 +19,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--bg-soft)' }}>
         <div className="text-center animate-pulse">
-          <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Scissors className="w-8 h-8 text-white" />
-          </div>
+          <img src="/logo.jpg" alt="Beauty CRM" className="w-16 h-16 rounded-2xl object-cover mx-auto mb-4 shadow-lg" />
           <p style={{ color: 'var(--text-muted)' }}>Caricamento...</p>
         </div>
       </div>
@@ -45,9 +42,7 @@ function AppRoutes() {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--bg-soft)' }}>
         <div className="text-center animate-pulse">
-          <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Scissors className="w-8 h-8 text-white" />
-          </div>
+          <img src="/logo.jpg" alt="Beauty CRM" className="w-16 h-16 rounded-2xl object-cover mx-auto mb-4 shadow-lg" />
           <p style={{ color: 'var(--text-muted)' }}>Caricamento...</p>
         </div>
       </div>

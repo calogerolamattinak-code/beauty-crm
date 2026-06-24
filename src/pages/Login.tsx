@@ -44,9 +44,7 @@ export function Login() {
       {/* Hero gradient section */}
       <div className="gradient-primary px-6 pt-16 pb-20 rounded-b-[2rem]">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
-            <Scissors className="w-6 h-6 text-white" />
-          </div>
+          <img src="/logo.jpg" alt="Beauty CRM" className="w-12 h-12 rounded-2xl object-cover shadow-lg" />
           <span className="text-white font-bold text-xl">Beauty CRM</span>
         </div>
         <h1 className="text-white text-3xl font-bold mb-2">
