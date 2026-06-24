@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
@@ -6,7 +7,8 @@ import { Mail, Lock, User, Scissors } from 'lucide-react';
 
 export function Login() {
   const { signIn, signUp, signInWithGoogle } = useAuth();
-  const [isRegister, setIsRegister] = useState(false);
+  const [searchParams] = useSearchParams();
+  const [isRegister, setIsRegister] = useState(searchParams.get('register') === 'true');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');

@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './hooks/useAuth';
 import { ThemeProvider } from './hooks/useTheme';
 import { AppLayout } from './components/layout/AppLayout';
 import { Login } from './pages/Login';
+import { Landing } from './pages/Landing';
 import { Onboarding } from './pages/Onboarding';
 import { Dashboard } from './pages/Dashboard';
 import { Calendar } from './pages/Calendar';
@@ -65,6 +66,8 @@ function AppRoutes() {
 
   return (
     <Routes>
+      <Route path="/" element={<Landing />} />
+
       <Route path="/login" element={
         firebaseUser ? <Navigate to="/dashboard" replace /> : <Login />
       } />
