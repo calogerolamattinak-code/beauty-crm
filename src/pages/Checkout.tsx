@@ -4,6 +4,7 @@ import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { Crown, Check, ArrowLeft, Sparkles } from 'lucide-react';
 import { PREMIUM_PRICE, getPremiumFeatures } from '../lib/subscription';
+import { app } from '../lib/firebase';
 
 interface CheckoutProps {
   onBack: () => void;
@@ -25,7 +26,7 @@ export function Checkout({ onBack, salonName }: CheckoutProps) {
   const handleUpgrade = async () => {
     setLoading(true);
     try {
-      const fn = getFunctions();
+      const fn = getFunctions(app, 'us-central1');
       const createCheckout = httpsCallable(fn, 'createCheckoutSession');
       const result = await createCheckout({ priceId: priceIds[billing] });
       const data = result.data as { url: string };
