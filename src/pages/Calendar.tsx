@@ -17,9 +17,17 @@ import type { Appointment, Service, Client } from '../types';
 
 const DAYS_SHORT = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
 
+/** 30-min slots from 05:00 to 19:30 (last start time) */
+const SLOTS: { hour: number; min: number }[] = [];
+for (let h = 5; h <= 19; h++) {
+  SLOTS.push({ hour: h, min: 0 });
+  if (h < 20) SLOTS.push({ hour: h, min: 30 });
+}
+
 function getWeekDates(date: Date): Date[] {
   const start = new Date(date);
   start.setDate(start.getDate() - start.getDay());
+  start.setHours(0, 0, 0, 0);
   const dates: Date[] = [];
   for (let i = 0; i < 7; i++) {
     const d = new Date(start);
@@ -30,12 +38,31 @@ function getWeekDates(date: Date): Date[] {
 }
 
 function formatWeekRange(dates: Date[]): string {
-  const start = dates[1]; // Monday
-  const end = dates[5]; // Friday
-  return `${start.toLocaleDateString('it-IT', { day: 'numeric', month: 'long' })} - ${end.toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+  const start = dates[0];
+  const end = dates[6];
+  return `${start.toLocaleDateString('it-IT', { day: 'numeric', month: 'short' })} - ${end.toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' })}`;
 }
 
-const HOURS = Array.from({ length: 12 }, (_, i) => i + 8); // 8:00 - 19:00
+function formatSlotLabel(hour: number, min: number): string {
+  return `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
+}
+
+function getSlotStart(date: Date, hour: number, min: number): Date {
+  const d = new Date(date);
+  d.setHours(hour, min, 0, 0);
+  return d;
+}
+
+function getSlotEnd(date: Date, hour: number, min: number): Date {
+  const d = getSlotStart(date, hour, min);
+  d.setMinutes(d.getMinutes() + 30);
+  return d;
+}
+
+/** Check if two time ranges overlap */
+function rangesOverlap(aStart: Date, aEnd: Date, bStart: Date, bEnd: Date): boolean {
+  return aStart < bEnd && aEnd > bStart;
+}
 
 export function Calendar() {
   const { firebaseUser } = useAuth();
@@ -44,6 +71,7 @@ export function Calendar() {
   const [services, setServices] = useState<Service[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [selectedSlot, setSelectedSlot] = useState<{ hour: number; min: number; dateStr?: string } | null>(null);
 
   const weekDates = getWeekDates(currentDate);
 
@@ -51,7 +79,6 @@ export function Calendar() {
     const uid = firebaseUser?.uid;
     if (!uid) return;
 
-    // Load services and clients for the modal
     const unsubServices = onSnapshot(
       query(collection(db, 'services'), where('userId', '==', uid)),
       (snap) => setServices(snap.docs.map(d => ({ id: d.id, ...d.data() } as Service)))
@@ -62,7 +89,6 @@ export function Calendar() {
       (snap) => setClients(snap.docs.map(d => ({ id: d.id, ...d.data() } as Client)))
     );
 
-    // Load appointments for this week
     const startOfWeek = weekDates[0];
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(endOfWeek.getDate() + 7);
@@ -100,19 +126,23 @@ export function Calendar() {
     setCurrentDate(d);
   };
 
-  const getAppointmentsForDayAndHour = (date: Date, hour: number): Appointment[] => {
+  const getAppointmentsForSlot = (date: Date, hour: number, min: number): Appointment[] => {
+    const slotStart = getSlotStart(date, hour, min);
+    const slotEnd = getSlotEnd(date, hour, min);
     return appointments.filter((app) => {
-      const appDate = app.startTime;
-      const sameDay = appDate.toDateString() === date.toDateString();
-      const appHour = appDate.getHours();
-      const appEndHour = app.endTime.getHours();
-      return sameDay && appHour <= hour && appEndHour > hour;
+      return app.startTime.toDateString() === date.toDateString() &&
+        rangesOverlap(app.startTime, app.endTime, slotStart, slotEnd);
     });
   };
 
   const isToday = (date: Date) => {
     const today = new Date();
     return date.toDateString() === today.toDateString();
+  };
+
+  const handleSlotClick = (clickDate: Date, hour: number, min: number) => {
+    setSelectedSlot({ hour, min, dateStr: clickDate.toISOString().split('T')[0] });
+    setShowModal(true);
   };
 
   return (
@@ -123,7 +153,7 @@ export function Calendar() {
           <h1 className="text-2xl font-bold text-text-dark">Calendario</h1>
           <p className="text-sm text-text-muted capitalize">{formatWeekRange(weekDates)}</p>
         </div>
-        <Button onClick={() => setShowModal(true)}>
+        <Button onClick={() => { setSelectedSlot(null); setShowModal(true); }}>
           <Plus className="w-4 h-4 mr-1" />
           Nuovo
         </Button>
@@ -131,7 +161,7 @@ export function Calendar() {
 
       {/* Week navigation */}
       <div className="flex items-center justify-between mb-4">
-        <button onClick={prevWeek} className="btn-ghost">
+        <button onClick={prevWeek} className="btn-ghost p-2">
           <ChevronLeft className="w-5 h-5" />
         </button>
         <button
@@ -140,7 +170,7 @@ export function Calendar() {
         >
           Oggi
         </button>
-        <button onClick={nextWeek} className="btn-ghost">
+        <button onClick={nextWeek} className="btn-ghost p-2">
           <ChevronRight className="w-5 h-5" />
         </button>
       </div>
@@ -161,51 +191,76 @@ export function Calendar() {
 
       {/* Calendar grid - scrollable */}
       <div className="overflow-auto max-h-[65vh] rounded-2xl bg-[var(--bg-card)] border border-[var(--border-light)]">
-        <div className="min-w-[600px]">
-          {/* Time grid */}
-          {HOURS.map((hour) => (
-            <div key={hour} className="grid grid-cols-[60px_1fr_1fr_1fr_1fr_1fr_1fr_1fr] border-b border-[var(--border-light)]">
-              {/* Time label */}
-              <div className="text-xs text-text-muted py-3 px-2 text-right border-r border-[#F0E8E8]">
-                {hour.toString().padStart(2, '0')}:00
+        <div className="min-w-[700px]">
+          {/* Header row */}
+          <div className="grid grid-cols-[70px_1fr_1fr_1fr_1fr_1fr_1fr_1fr] border-b border-[var(--border-light)]">
+            <div className="text-[10px] text-text-muted py-2 px-2 text-right border-r border-[var(--border-light)]" />
+            {weekDates.map((date, i) => (
+              <div
+                key={i}
+                className={`text-center py-2 border-r border-[var(--border-light)] ${
+                  isToday(date) ? 'bg-[var(--primary-50)]/30' : ''
+                }`}
+              >
+                <span className="text-[10px] font-medium text-text-muted">{DAYS_SHORT[date.getDay()]}</span>
+                <span className={`ml-1 text-xs font-bold ${isToday(date) ? 'text-primary-500' : 'text-text-dark'}`}>
+                  {date.getDate()}
+                </span>
               </div>
-              {/* Day columns */}
-              {weekDates.map((date, dayIdx) => {
-                const apps = getAppointmentsForDayAndHour(date, hour);
-                return (
-                  <div
-                    key={dayIdx}
-                    className={`min-h-[60px] border-r border-[#F0E8E8] p-1 relative cursor-pointer hover:bg-[var(--primary-50)] transition-all ${
-                      isToday(date) ? 'bg-[var(--primary-50)]/50' : ''
-                    }`}
-                    onClick={() => {
-                      setShowModal(true);
-                    }}
-                  >
-                    {apps.map((app) => (
-                      <div
-                        key={app.id}
-                        className="text-xs p-1.5 rounded-lg mb-0.5 cursor-pointer text-white"
-                        style={{ backgroundColor: app.serviceName ? '#FF6B9D' : '#C44A8C' }}
-                        title={`${app.clientName} - ${app.serviceName}`}
-                      >
-                        <p className="font-semibold truncate">{app.clientName}</p>
-                        <p className="opacity-80 truncate">{app.serviceName}</p>
-                      </div>
-                    ))}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* Time slots */}
+          {SLOTS.map((slot, slotIdx) => {
+            const slotLabel = formatSlotLabel(slot.hour, slot.min);
+            return (
+              <div
+                key={slotIdx}
+                className="grid grid-cols-[70px_1fr_1fr_1fr_1fr_1fr_1fr_1fr] border-b border-[var(--border-light)]"
+              >
+                {/* Time label */}
+                <div className="text-[11px] text-text-muted py-2 px-2 text-right border-r border-[var(--border-light)] font-mono">
+                  {slotLabel}
+                </div>
+                {/* Day columns */}
+                {weekDates.map((date, dayIdx) => {
+                  const apps = getAppointmentsForSlot(date, slot.hour, slot.min);
+                  return (
+                    <div
+                      key={dayIdx}
+                      className={`min-h-[36px] border-r border-[var(--border-light)] p-0.5 relative cursor-pointer transition-all hover:bg-[var(--primary-50)] ${
+                        isToday(date) ? 'bg-[var(--primary-50)]/20' : ''
+                      }`}
+                      onClick={() => handleSlotClick(date, slot.hour, slot.min)}
+                    >
+                      {apps.map((app) => (
+                        <div
+                          key={app.id}
+                          className="text-[11px] p-1 rounded-md mb-0.5 cursor-pointer text-white font-medium truncate shadow-sm"
+                          style={{ backgroundColor: app.serviceName ? '#EC4899' : '#A855F7' }}
+                          title={`${app.clientName} — ${app.serviceName || 'nessun servizio'}`}
+                        >
+                          <span className="font-semibold">{app.clientName}</span>
+                          {app.serviceName && (
+                            <span className="opacity-80 ml-1">· {app.serviceName}</span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
         </div>
       </div>
 
       <AddAppointmentModal
         isOpen={showModal}
-        onClose={() => setShowModal(false)}
+        onClose={() => { setShowModal(false); setSelectedSlot(null); }}
         services={services}
         clients={clients}
+        preselectedSlot={selectedSlot}
       />
     </div>
   );
@@ -216,11 +271,13 @@ function AddAppointmentModal({
   onClose,
   services,
   clients,
+  preselectedSlot,
 }: {
   isOpen: boolean;
   onClose: () => void;
   services: Service[];
   clients: Client[];
+  preselectedSlot: { hour: number; min: number; dateStr?: string } | null;
 }) {
   const { firebaseUser } = useAuth();
   const [selectedClientId, setSelectedClientId] = useState('');
@@ -229,6 +286,16 @@ function AddAppointmentModal({
   const [time, setTime] = useState('10:00');
   const [notes, setNotes] = useState('');
   const [saving, setSaving] = useState(false);
+
+  // Pre-select time slot if coming from calendar click
+  useEffect(() => {
+    if (preselectedSlot && isOpen) {
+      setTime(`${preselectedSlot.hour.toString().padStart(2, '0')}:${preselectedSlot.min.toString().padStart(2, '0')}`);
+      if (preselectedSlot.dateStr) {
+        setDate(preselectedSlot.dateStr);
+      }
+    }
+  }, [preselectedSlot, isOpen]);
 
   const selectedService = services.find((s) => s.id === selectedServiceId);
   const client = clients.find((c) => c.id === selectedClientId);
@@ -257,6 +324,11 @@ function AddAppointmentModal({
         createdAt: Timestamp.now(),
       });
       onClose();
+      setSelectedClientId('');
+      setSelectedServiceId('');
+      setDate(new Date().toISOString().split('T')[0]);
+      setTime('10:00');
+      setNotes('');
     } catch (err) {
       console.error('Error creating appointment:', err);
     } finally {
@@ -316,6 +388,7 @@ function AddAppointmentModal({
             <label className="block text-sm font-medium text-text-dark mb-1.5">Ora</label>
             <input
               type="time"
+              step="900"
               className="input-field"
               value={time}
               onChange={(e) => setTime(e.target.value)}
@@ -328,8 +401,8 @@ function AddAppointmentModal({
             <p className="font-medium text-text-dark">Riepilogo</p>
             <p className="text-text-muted mt-1">
               {client?.name} — {selectedService.name}<br />
-              {time} — {new Date(`${date}T${time}`).getHours()}:{String(new Date(`${date}T${time}`).getMinutes() + selectedService.duration).padStart(2, '0')} ({selectedService.duration}min)<br />
-              <span className="font-bold text-primary-500">{formatCurrency(selectedService.price)}</span>
+              {time} — {formatCurrency(selectedService.price)}
+              <span className="text-text-dim"> · {selectedService.duration}min</span>
             </p>
           </div>
         )}
