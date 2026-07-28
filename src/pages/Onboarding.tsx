@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { useAuth } from '../hooks/useAuth';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { ArrowRight, Scissors, Clock, Phone } from 'lucide-react';
+import { ArrowRight, Scissors, Clock } from 'lucide-react';
 import type { DaySchedule } from '../types';
 
 const DAYS_ITALIAN: (keyof DaySchedule)[] = [
@@ -33,6 +34,7 @@ const defaultWorkingHours = {
 
 export function Onboarding() {
   const { user, firebaseUser } = useAuth();
+  const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [salonName, setSalonName] = useState('');
   const [phone, setPhone] = useState('');
@@ -48,8 +50,16 @@ export function Onboarding() {
       await updateDoc(doc(db, 'users', uid), {
         salonName: salonName || user?.salonName,
         phone: phone || user?.phone || '',
-        settings: { workingHours, breakDuration: 15, reminderEnabled: false, reminderHoursBefore: 24, whatsappNumber: '' },
+        'settings.workingHours': workingHours,
+        'settings.breakDuration': 15,
+        'settings.reminderEnabled': false,
+        'settings.reminderHoursBefore': 24,
+        'settings.whatsappNumber': '',
       });
+      navigate('/dashboard');
+    } catch (err) {
+      console.error('Error saving onboarding:', err);
+      alert('Errore durante il salvataggio. Riprova.');
     } finally {
       setLoading(false);
     }
@@ -70,8 +80,7 @@ export function Onboarding() {
   };
 
   if (user?.salonName && user?.settings?.workingHours && !step) {
-    // Already has data, skip onboarding
-    return null;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return (
@@ -105,14 +114,14 @@ export function Onboarding() {
                 placeholder="Es. Beauty Studio di Maria"
                 value={salonName}
                 onChange={(e) => setSalonName(e.target.value)}
-                icon={<Scissors className="w-4 h-4" />}
+
               />
               <Input
                 label="Il tuo numero di telefono"
                 placeholder="+39 333 123 4567"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                icon={<Phone className="w-4 h-4" />}
+
                 type="tel"
               />
             </div>

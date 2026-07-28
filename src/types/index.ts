@@ -9,6 +9,12 @@ export interface User {
   createdAt: Date;
   isPremium: boolean;
   settings: UserSettings;
+  // Logo: preset name (e.g. 'scissors') or base64 data URL for custom upload
+  logoPreset?: string;
+  logo?: string;
+  // Billing info
+  fiscalCode?: string; // Partita IVA o Codice Fiscale
+  billingAddress?: string;
 }
 
 export interface UserSettings {
@@ -16,7 +22,6 @@ export interface UserSettings {
   breakDuration: number;
   reminderEnabled: boolean;
   reminderHoursBefore: number;
-  whatsappNumber: string;
 }
 
 export interface DaySchedule {
@@ -35,10 +40,14 @@ export interface TimeRange {
   isActive: boolean;
 }
 
+export type ServiceCategory = 'Capelli' | 'Unghie' | 'Estetica' | 'Makeup' | 'Altro';
+
 export interface Service {
   id: string;
   userId: string;
   name: string;
+  category: ServiceCategory;
+  description?: string;
   duration: number; // minutes
   price: number;    // euros
   color: string;    // hex color
@@ -53,6 +62,7 @@ export interface Client {
   phone: string;
   email?: string;
   notes?: string;
+  personalNotes?: string;
   preferredServices: string[];
   lastVisit?: Date;
   totalVisits: number;
@@ -60,6 +70,8 @@ export interface Client {
   birthDate?: string;
   reminderConsent: boolean;
 }
+
+export type AppointmentOutcome = 'done' | 'reschedule' | 'recontact' | null;
 
 export interface Appointment {
   id: string;
@@ -75,6 +87,7 @@ export interface Appointment {
   endTime: Date;
   status: 'confirmed' | 'completed' | 'cancelled' | 'no-show';
   notes?: string;
+  outcome?: AppointmentOutcome;
   reminderSent: boolean;
   createdAt: Date;
 }

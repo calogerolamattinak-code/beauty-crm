@@ -1,5 +1,6 @@
 import { Crown, Lock } from 'lucide-react';
 import { type ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from './Button';
 
 interface PremiumGateProps {
@@ -10,6 +11,7 @@ interface PremiumGateProps {
 }
 
 export function PremiumGate({ isPremium, feature, children, fallback }: PremiumGateProps) {
+  const navigate = useNavigate();
   if (isPremium) {
     return <>{children}</>;
   }
@@ -28,7 +30,7 @@ export function PremiumGate({ isPremium, feature, children, fallback }: PremiumG
           </div>
           <p className="font-semibold text-text-dark mb-1">Funzione Premium</p>
           <p className="text-sm text-text-muted mb-3">{feature}</p>
-          <Button size="sm">
+          <Button size="sm" onClick={() => navigate('/settings')}>
             Passa a Premium — 9,90€/mese
           </Button>
         </div>
@@ -51,7 +53,7 @@ export function PremiumBadge({ isPremium }: { isPremium: boolean }) {
     );
   }
   return (
-    <span className="inline-flex items-center gap-1 bg-[#F0E8E8] text-text-muted text-xs font-medium px-2 py-1 rounded-lg">
+    <span className="inline-flex items-center gap-1 bg-[var(--bg-elevated)] text-[var(--text-muted)] text-xs font-medium px-2 py-1 rounded-lg border border-[var(--border-light)]">
       <Lock className="w-3 h-3" />
       FREE
     </span>
@@ -59,6 +61,7 @@ export function PremiumBadge({ isPremium }: { isPremium: boolean }) {
 }
 
 export function ClientLimitBar({ current, max }: { current: number; max: number }) {
+  const navigate = useNavigate();
   const percent = max === Infinity ? 0 : Math.min((current / max) * 100, 100);
   const isNearLimit = percent >= 80;
   const isAtLimit = percent >= 100;
@@ -66,16 +69,16 @@ export function ClientLimitBar({ current, max }: { current: number; max: number 
   if (max === Infinity) return null;
 
   return (
-    <div className="bg-white rounded-2xl border border-[#F0E8E8] p-4 mb-4">
+    <div className="bg-[var(--bg-card)] rounded-2xl border border-[var(--border-light)] p-4 mb-4">
       <div className="flex items-center justify-between mb-2">
-        <p className="text-sm font-medium text-text-dark">
+        <p className="text-sm font-medium text-[var(--text-dark)]">
           {isAtLimit ? '🔒 Limite raggiunto' : isNearLimit ? '⚠️ Quasi al limite' : '📊 Clienti'}
         </p>
-        <p className="text-xs font-bold text-text-muted">
+        <p className="text-xs font-bold text-[var(--text-muted)]">
           {current} / {max}
         </p>
       </div>
-      <div className="h-2 bg-[#F0E8E8] rounded-full overflow-hidden">
+      <div className="h-2 bg-[var(--bg-elevated)] rounded-full overflow-hidden">
         <div
           className={`h-full rounded-full transition-all ${
             isAtLimit ? 'bg-danger' : isNearLimit ? 'bg-warning' : 'bg-primary-500'
@@ -84,11 +87,11 @@ export function ClientLimitBar({ current, max }: { current: number; max: number 
         />
       </div>
       {isAtLimit && (
-        <div className="mt-3 bg-primary-50 rounded-xl p-3 text-center">
-          <p className="text-sm text-text-dark font-medium mb-2">
+        <div className="mt-3 bg-[var(--primary-50)] rounded-xl p-3 text-center">
+          <p className="text-sm text-[var(--text-dark)] font-medium mb-2">
             🎯 Hai raggiunto il limite gratuito
           </p>
-          <Button size="sm">
+          <Button size="sm" onClick={() => navigate('/settings')}>
             Passa a Premium — 9,90€/mese
           </Button>
         </div>

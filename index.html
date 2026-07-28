@@ -1,13 +1,255 @@
 <!doctype html>
-<html lang="en">
+<html lang="it">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/jpg" href="/logo.jpg">
+    <link rel="apple-touch-icon" href="/logo.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beauty CRM</title>
+
+    <!-- SEO -->
+    <title>Beauty CRM — Gestionale per Parrucchieri e Centri Estetici</title>
+    <meta name="description" content="Il gestionale completo per il tuo salone di bellezza. Agenda smart, gestione clienti, catalogo servizi e statistiche. Provalo gratis, nessuna carta di credito.">
+    <meta name="author" content="Beauty CRM">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <meta name="googlebot" content="index, follow">
+    <meta name="google-site-verification" content="Z6iRDwU_BNk5nqNCnK9Hfm7LTOJnxl7umiGpZGpvF-w" />
+
+    <!-- GEO: Entity & geo-targeting -->
+    <meta name="geo.region" content="IT">
+    <meta name="geo.placename" content="Italia">
+    <meta name="language" content="it-IT">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Beauty CRM">
+    <meta property="og:title" content="Beauty CRM — Gestionale per Parrucchieri e Centri Estetici">
+    <meta property="og:description" content="Agenda smart, gestione clienti, catalogo servizi e statistiche. Tutto in un unico software per il tuo salone. Provalo gratis.">
+    <meta property="og:image" content="https://beautycrm.website/og-banner.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://beautycrm.website">
+    <meta property="og:locale" content="it_IT">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@beautycrm">
+    <meta name="twitter:title" content="Beauty CRM — Gestionale per il tuo salone">
+    <meta name="twitter:description" content="Agenda smart, gestione clienti, catalogo servizi e statistiche. Provalo gratis.">
+    <meta name="twitter:image" content="https://beautycrm.website/og-banner.png">
+
+    <!-- Apple / PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Beauty CRM">
+    <meta name="theme-color" content="#0E0E18">
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <!-- Schema.org JSON-LD: Organization + SoftwareApplication -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "LocalBusiness",
+          "@id": "https://beautycrm.website/#localbusiness",
+          "name": "Beauty CRM",
+          "legalName": "Lamattina Calogero",
+          "url": "https://beautycrm.website",
+          "logo": "https://beautycrm.website/og-banner.png",
+          "email": "info@beautycrm.website",
+          "taxID": "02176270854",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Piazza Europa 5",
+            "addressLocality": "Campofranco",
+            "addressRegion": "CL",
+            "postalCode": "93010",
+            "addressCountry": "IT"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "37.4316",
+            "longitude": "13.7116"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "Italia"
+          },
+          "priceRange": "€0 - €9,90",
+          "sameAs": [
+            "https://beautycrm.website"
+          ]
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://beautycrm.website/#organization",
+          "name": "Beauty CRM",
+          "url": "https://beautycrm.website",
+          "logo": "https://beautycrm.website/logo.jpg",
+          "email": "info@beautycrm.website",
+          "description": "Gestionale completo per parrucchieri e centri estetici. Agenda, clienti, servizi e statistiche in un'unica app.",
+          "foundingDate": "2025",
+          "areaServed": {
+            "@type": "Country",
+            "name": "Italia"
+          },
+          "sameAs": [
+            "https://beautycrm.website"
+          ]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://beautycrm.website/#software",
+          "name": "Beauty CRM",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web, iOS, Android",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR",
+            "description": "Piano Free — fino a 30 clienti"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "5",
+            "reviewCount": "3",
+            "bestRating": "5"
+          },
+          "featureList": [
+            "Agenda appuntamenti con drag & drop",
+            "Gestione clienti con cronologia",
+            "Catalogo servizi personalizzabile",
+            "Statistiche e report",
+            "Promemoria WhatsApp (Premium)",
+            "Backup automatico (Premium)"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://beautycrm.website/#website",
+          "name": "Beauty CRM",
+          "url": "https://beautycrm.website",
+          "inLanguage": "it",
+          "description": "Il gestionale completo per il tuo salone di bellezza",
+          "publisher": {
+            "@id": "https://beautycrm.website/#organization"
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- FAQ Schema (10 domande per GEO) -->
+    <script type="application/ld+json" id="faq-schema">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Beauty CRM è davvero gratis?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sì! Il piano Free è gratis per sempre, con fino a 30 clienti e tutte le funzioni principali. Nessuna carta di credito richiesta."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Come funzionano i promemoria WhatsApp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Con il piano Premium (9,90€/mese), il sistema invia automaticamente un messaggio WhatsApp ai clienti 24 ore prima dell'appuntamento, riducendo le mancate presenze fino al 50%."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Beauty CRM funziona su telefono?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sì, Beauty CRM è ottimizzato per mobile e funziona direttamente dal browser senza scaricare app. Funziona anche su tablet e computer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "I miei dati sono al sicuro?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sì. I dati sono archiviati su server Google Firebase con crittografia. Ogni utente vede solo i propri dati, protetti da autenticazione Google."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Posso disdire il Premium quando voglio?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sì, non ci sono vincoli. Puoi passare dal piano Premium al piano Free in qualsiasi momento, mantenendo tutti i tuoi dati."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Posso importare i miei clienti esistenti?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sì, puoi aggiungere manualmente i tuoi clienti in pochi secondi dalla sezione Clienti. Stiamo lavorando all'importazione massiva da Excel e CSV."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Come si cancellano gli appuntamenti?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Puoi cancellare un appuntamento con un clic dalla sezione Agenda. Il cliente riceve automaticamente una notifica di cancellazione."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Posso avere più di un operatore?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sì! Con il piano Premium puoi gestire più operatori nel tuo salone. Ogni operatore ha la propria agenda e i clienti prenotano con l'operatore specifico."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Si può usare su tablet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Certamente! Beauty CRM è ottimizzato per tablet, smartphone e computer con interfaccia responsive che si adatta a ogni schermo."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Accettate bonifico?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Per il Premium accettiamo carte di credito/debito e PayPal. Il bonifico bancario è disponibile per piani annuali o soluzioni business personalizzate."
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Register service worker for PWA / offline support
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js', { scope: '/' })
+            .then((reg) => console.log('SW registered:', reg.scope))
+            .catch((err) => console.error('SW registration failed:', err));
+        });
+      }
+    </script>
   </body>
 </html>

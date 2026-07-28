@@ -1,8 +1,38 @@
+Options -MultiViews
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+
+  # ==========================================
+  # 1. Redirect www → non-www (HTTPS only)
+  # ==========================================
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+  # ==========================================
+  # 2. SPA routing — serve index.html for all
+  #    non-file/non-directory requests
+  # ==========================================
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule . /index.html [L]
 </IfModule>
+
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
+
+# Cache: static assets (fingerprinted by Vite) — 1 year
+<FilesMatch "\.(js|css|png|jpg|webp|svg|woff2?)$">
+  Header set Cache-Control "public, immutable, max-age=31536000"
+</FilesMatch>
+
+# Cache: HTML — never cache (SPA entry point)
+<FilesMatch "index\.html$">
+  Header set Cache-Control "no-store, no-cache, must-revalidate"
+</FilesMatch>

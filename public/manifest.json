@@ -1,0 +1,31 @@
+{
+  "name": "Beauty CRM — Gestionale per Parrucchieri e Centri Estetici",
+  "short_name": "Beauty CRM",
+  "description": "Il gestionale completo per il tuo salone di bellezza. Agenda smart, gestione clienti, catalogo servizi e statistiche. Provalo gratis.",
+  "theme_color": "#0E0E18",
+  "background_color": "#0E0E18",
+  "display": "standalone",
+  "start_url": "/",
+  "lang": "it",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

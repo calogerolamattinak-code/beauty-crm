@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   collection,
   query,
@@ -18,6 +19,7 @@ import type { Appointment } from '../types';
 
 export function Dashboard() {
   const { user, firebaseUser } = useAuth();
+  const navigate = useNavigate();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -79,7 +81,7 @@ export function Dashboard() {
         </div>
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-text-dark">Ciao, {user?.name?.split(' ')[0] || 'Benvenuta'} 👋</h1>
-          <Button size="sm" variant="ghost" className="gradient-primary text-white">
+          <Button size="sm" variant="ghost" className="gradient-primary text-white" onClick={() => navigate('/calendar')}>
             <Plus className="w-4 h-4 mr-1" />
             Nuovo
           </Button>
@@ -109,7 +111,7 @@ export function Dashboard() {
       </h2>
 
       {appointments.length === 0 ? (
-        <EmptyState />
+        <EmptyState onAdd={() => navigate('/calendar')} />
       ) : (
         <div className="space-y-3">
           {appointments.map((app) => (
@@ -136,6 +138,18 @@ function AppointmentCard({ appointment }: { appointment: Appointment }) {
     'no-show': 'Non venuto',
   };
 
+  const outcomeLabels: Record<string, string> = {
+    done: 'Svolto ✅',
+    reschedule: 'Da spostare 🔄',
+    recontact: 'Da ricontattare 📞',
+  };
+
+  const outcomeColors: Record<string, string> = {
+    done: 'text-green-400',
+    reschedule: 'text-amber-400',
+    recontact: 'text-blue-400',
+  };
+
   return (
     <div className="flex gap-3">
       {/* Time column */}
@@ -153,6 +167,11 @@ function AppointmentCard({ appointment }: { appointment: Appointment }) {
             <h3 className="font-semibold text-text-dark truncate">{appointment.clientName}</h3>
             <p className="text-sm text-text-muted truncate">{appointment.serviceName}</p>
             <p className="text-sm font-bold text-primary-500">{formatCurrency(appointment.price)}</p>
+            {appointment.outcome && (
+              <p className={`text-xs font-medium mt-0.5 ${outcomeColors[appointment.outcome] || ''}`}>
+                {outcomeLabels[appointment.outcome] || appointment.outcome}
+              </p>
+            )}
           </div>
           <div className="flex flex-col gap-2">
             <a
@@ -169,7 +188,7 @@ function AppointmentCard({ appointment }: { appointment: Appointment }) {
   );
 }
 
-function EmptyState() {
+function EmptyState({ onAdd }: { onAdd: () => void }) {
   return (
     <Card className="text-center py-12">
       <div className="w-16 h-16 bg-[var(--primary-50)] rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -177,7 +196,7 @@ function EmptyState() {
       </div>
       <h3 className="font-bold text-text-dark mb-1">Nessun appuntamento oggi</h3>
       <p className="text-sm text-text-muted mb-4">Goditi la giornata o aggiungi un nuovo appuntamento!</p>
-      <Button>
+      <Button onClick={onAdd}>
         <Plus className="w-4 h-4 mr-1" />
         Nuovo appuntamento
       </Button>

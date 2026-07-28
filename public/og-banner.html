@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html><head><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1200px;height:630px;background:#0E0E18;display:flex;align-items:center;padding:60px;font-family:sans-serif;overflow:hidden}
+.left{flex:1}
+.right{flex:1;display:flex;justify-content:center;align-items:center}
+.logo{width:80px;height:80px;background:linear-gradient(135deg,#EC4899,#A855F7);border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:40px;color:white;font-weight:bold}
+h1{font-size:42px;color:white;font-weight:900;line-height:1.1;margin-bottom:12px}
+h1 span{background:linear-gradient(135deg,#EC4899,#A855F7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+p{font-size:18px;color:#A0A0B8;line-height:1.5;margin-bottom:24px}
+.badge{display:inline-block;padding:8px 20px;border-radius:50px;background:linear-gradient(135deg,#EC4899,#A855F7);color:white;font-size:14px;font-weight:bold}
+.mockup{width:420px;height:350px;background:#16161F;border-radius:16px;border:1px solid rgba(255,255,255,0.08);overflow:hidden;box-shadow:0 20px 60px rgba(168,85,247,0.2)}
+.bar{height:40px;background:#1C1C28;display:flex;align-items:center;padding:12px;gap:6px}
+.dot{width:10px;height:10px;border-radius:50%;background:#555}
+.body{display:flex;height:calc(100% - 40px)}
+.sidebar{width:50px;background:#12121B;display:flex;flex-direction:column;align-items:center;padding:12px;gap:10px}
+.sb-icon{width:28px;height:28px;border-radius:6px;background:rgba(236,72,153,0.15)}
+.content{flex:1;padding:16px;display:flex;flex-direction:column;gap:8px}
+.cards{display:flex;gap:8px}
+.card{flex:1;height:60px;background:#1C1C28;border-radius:8px;border:1px solid rgba(255,255,255,0.05)}
+.chart{flex:1;height:50px;background:#1C1C28;border-radius:8px;display:flex;align-items:flex-end;padding:8px;gap:4px}
+.chart-bar{flex:1;border-radius:3px;background:rgba(255,255,255,0.08)}
+.chart-bar.active{background:linear-gradient(to top,#EC4899,#A855F7)}
+.appt{height:44px;background:#1C1C28;border-radius:8px;border:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;padding:10px;gap:8px}
+.appt-avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#EC4899,#A855F7)}
+.appt-text{flex:1;height:8px;background:#333;border-radius:4px}
+.appt-time{width:40px;height:8px;border-radius:4px;background:#D46AA8}
+</style></head><body>
+<div class="left">
+  <div class="logo">B</div>
+  <h1>Il gestionale per<br>il tuo <span>salone</span></h1>
+  <p>Agenda smart, clienti, servizi e statistiche.<br>Tutto in un unico software.</p>
+  <div class="badge">✨ Prova gratis · Nessuna carta</div>
+</div>
+<div class="right">
+  <div class="mockup">
+    <div class="bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    <div class="body">
+      <div class="sidebar"><div class="sb-icon"></div><div class="sb-icon"></div><div class="sb-icon"></div></div>
+      <div class="content">
+        <div class="cards"><div class="card"></div><div class="card"></div><div class="card"></div></div>
+        <div class="chart">
+          <div class="chart-bar" style="height:30%"></div>
+          <div class="chart-bar active" style="height:90%"></div>
+          <div class="chart-bar" style="height:65%"></div>
+          <div class="chart-bar" style="height:40%"></div>
+        </div>
+        <div class="appt"><div class="appt-avatar"></div><div class="appt-text"></div><div class="appt-time"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body></html>

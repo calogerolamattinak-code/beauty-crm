@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { getFunctions, httpsCallable } from 'firebase/functions';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { Crown, Check, ArrowLeft, Sparkles } from 'lucide-react';
 import { PREMIUM_PRICE, getPremiumFeatures } from '../lib/subscription';
-import { app } from '../lib/firebase';
+import { useAuth } from '../hooks/useAuth';
 
 interface CheckoutProps {
   onBack: () => void;
@@ -14,27 +13,31 @@ interface CheckoutProps {
 export function Checkout({ onBack, salonName }: CheckoutProps) {
   const [loading, setLoading] = useState(false);
   const [billing, setBilling] = useState<'monthly' | 'yearly'>('monthly');
+  const { firebaseUser, user } = useAuth();
 
   const features = getPremiumFeatures();
   const yearlyPrice = PREMIUM_PRICE * 10; // 2 mesi gratis
 
-  const priceIds: Record<string, string> = {
-    monthly: 'price_1TlvY92QeD9NgihgKbtFJ3Ry',
-    yearly: 'price_1Tm0G22QeD9NgihgqJwc6B58',
-  };
-
   const handleUpgrade = async () => {
+    if (!firebaseUser) {
+      alert('Devi essere loggato per passare a Premium');
+      return;
+    }
     setLoading(true);
     try {
-      const fn = getFunctions(app, 'us-central1');
-      const createCheckout = httpsCallable(fn, 'createCheckoutSession');
-      const result = await createCheckout({ priceId: priceIds[billing] });
-      const data = result.data as { url: string };
-      window.location.href = data.url;
+      // Use Stripe Payment Link directly — pass userId so webhook can upgrade the user
+      const baseUrl = billing === 'monthly'
+        ? 'https://buy.stripe.com/3cI5kD7Ny82ke4n8LE0VO01'
+        : 'https://buy.stripe.com/14AaEXebW3M4f8r7HA0VO02';
+      const params = new URLSearchParams({
+        client_reference_id: firebaseUser.uid,
+      });
+      const email = user?.email || firebaseUser.email;
+      if (email) params.set('prefilled_email', email);
+      window.location.href = `${baseUrl}?${params.toString()}`;
     } catch (err) {
       console.error('Checkout error:', err);
-      const message = (err as any)?.message || 'Errore durante il reindirizzamento a Stripe. Riprova più tardi.';
-      alert(`Errore: ${message}`);
+      alert('Errore durante il reindirizzamento a Stripe. Riprova più tardi.');
     } finally {
       setLoading(false);
     }
@@ -61,11 +64,11 @@ export function Checkout({ onBack, salonName }: CheckoutProps) {
       </div>
 
       {/* Billing toggle */}
-      <div className="bg-white rounded-2xl p-1 border border-[#F0E8E8] flex mb-4">
+      <div className="bg-[var(--bg-card)] rounded-2xl p-1 border border-[var(--border-light)] flex mb-4">
         <button
           onClick={() => setBilling('monthly')}
           className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all ${
-            billing === 'monthly' ? 'bg-text-dark text-white shadow-sm' : 'text-text-muted'
+            billing === 'monthly' ? 'bg-[var(--text-dark)] text-[var(--bg-soft)] shadow-sm' : 'text-[var(--text-dim)] hover:text-[var(--text-muted)]'
           }`}
         >
           Mensile
@@ -73,7 +76,7 @@ export function Checkout({ onBack, salonName }: CheckoutProps) {
         <button
           onClick={() => setBilling('yearly')}
           className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all relative ${
-            billing === 'yearly' ? 'bg-text-dark text-white shadow-sm' : 'text-text-muted'
+            billing === 'yearly' ? 'bg-[var(--text-dark)] text-[var(--bg-soft)] shadow-sm' : 'text-[var(--text-dim)] hover:text-[var(--text-muted)]'
           }`}
         >
           Annuale

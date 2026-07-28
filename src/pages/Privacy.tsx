@@ -16,7 +16,7 @@ export function Privacy() {
         </button>
 
         <h1 className="text-3xl font-bold mb-2">Privacy Policy</h1>
-        <p className="text-sm text-gray-500 mb-8">Ultimo aggiornamento: Giugno 2026</p>
+        <p className="text-sm text-gray-500 mb-8">Ultimo aggiornamento: 26/06/2026</p>
 
         <div className="space-y-6 text-gray-300 text-sm leading-relaxed">
           <section>
@@ -39,8 +39,9 @@ export function Privacy() {
             <h2 className="text-lg font-semibold text-white mb-2">2. Titolare del Trattamento</h2>
             <p>Il Titolare del trattamento dei dati è:</p>
             <p className="mt-1 text-white">
-              [Nome Azienda]<br />
-              [Indirizzo Sede Legale]<br />
+              Lamattina Calogero<br />
+              Piazza Europa 5, 93010 Campofranco (CL)<br />
+              P.IVA: 02176270854<br />
               <strong>Email:</strong> info@beautycrm.website
             </p>
             <p className="mt-2">

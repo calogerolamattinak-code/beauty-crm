@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { Mail, Lock, User, Scissors } from 'lucide-react';
+import { X } from 'lucide-react';
 
 export function Login() {
   const { signIn, signUp, signInWithGoogle } = useAuth();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [isRegister, setIsRegister] = useState(searchParams.get('register') === 'true');
   const [email, setEmail] = useState('');
@@ -42,28 +43,47 @@ export function Login() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Hero gradient section */}
-      <div className="gradient-primary px-6 pt-16 pb-20 rounded-b-[2rem]">
-        <div className="flex items-center gap-3 mb-4">
-          <img src="/logo.jpg" alt="Beauty CRM" className="w-12 h-12 rounded-2xl object-cover shadow-lg" />
-          <span className="text-white font-bold text-xl">Beauty CRM</span>
+    <div className="min-h-screen flex flex-col bg-[var(--bg-soft)]">
+      {/* Header */}
+      <div
+        className="px-6 pt-16 pb-20 relative overflow-hidden"
+        style={{ background: 'linear-gradient(135deg, #EC4899, #A855F7)' }}
+      >
+        {/* X button — back to home */}
+        <button
+          onClick={() => navigate('/')}
+          className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/30 transition-colors z-10"
+          aria-label="Torna alla home"
+        >
+          <X className="w-5 h-5" />
+        </button>
+        <div className="absolute inset-0 opacity-20" style={{
+          background: 'radial-gradient(circle at 30% 50%, rgba(255,255,255,0.3), transparent 60%)',
+        }} />
+        <div className="relative z-10">
+          <div className="flex items-center gap-3 mb-6">
+            <img src="/logo.jpg" alt="Beauty CRM" className="w-12 h-12 rounded-2xl object-cover shadow-lg" />
+            <span className="text-white font-bold text-xl">Beauty CRM</span>
+          </div>
+          <h1 className="text-white text-3xl font-bold mb-2 tracking-tight">
+            {isRegister ? 'Crea il tuo account' : 'Bentornato!'}
+          </h1>
+          <p className="text-white/80 text-base">
+            {isRegister
+              ? 'Inizia a gestire il tuo salone in modo semplice'
+              : 'Accedi al tuo salone digitale'}
+          </p>
         </div>
-        <h1 className="text-white text-3xl font-bold mb-2">
-          {isRegister ? 'Crea il tuo account' : 'Bentornato!'}
-        </h1>
-        <p className="text-white/80 text-base">
-          {isRegister
-            ? 'Inizia a gestire il tuo salone in modo semplice'
-            : 'Accedi al tuo salone digitale'}
-        </p>
       </div>
 
-      {/* Form section */}
-      <div className="flex-1 px-6 -mt-8">
-        <form onSubmit={handleSubmit} className="bg-[var(--bg-card)] border border-[var(--border-light)] rounded-2xl shadow-xl p-6 space-y-4">
+      {/* Form — no overlap */}
+      <div className="flex-1 px-6">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-[var(--bg-card)] border border-[var(--border-light)] rounded-2xl shadow-xl p-6 space-y-4"
+        >
           {error && (
-            <div className="bg-danger/10 text-danger text-sm p-3 rounded-xl">
+            <div className="bg-[var(--danger)]/10 text-[var(--danger)] text-sm p-3 rounded-xl border border-[var(--danger)]/20">
               {error}
             </div>
           )}
@@ -75,7 +95,6 @@ export function Login() {
                 placeholder="Mario Rossi"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                icon={<User className="w-4 h-4" />}
                 required
               />
               <Input
@@ -83,7 +102,6 @@ export function Login() {
                 placeholder="Salone Beauty"
                 value={salonName}
                 onChange={(e) => setSalonName(e.target.value)}
-                icon={<Scissors className="w-4 h-4" />}
                 required
               />
             </>
@@ -95,7 +113,6 @@ export function Login() {
             placeholder="tua@email.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            icon={<Mail className="w-4 h-4" />}
             required
           />
 
@@ -105,7 +122,6 @@ export function Login() {
             placeholder="Almeno 6 caratteri"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            icon={<Lock className="w-4 h-4" />}
             required
             minLength={6}
           />
@@ -119,7 +135,7 @@ export function Login() {
               <div className="w-full border-t border-[var(--border-light)]" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-[var(--bg-card)] px-3 text-text-muted">oppure</span>
+              <span className="bg-[var(--bg-card)] px-3 text-[var(--text-muted)]">oppure</span>
             </div>
           </div>
 
@@ -138,11 +154,11 @@ export function Login() {
             Continua con Google
           </Button>
 
-          <p className="text-center text-sm text-text-muted">
+          <p className="text-center text-sm text-[var(--text-muted)]">
             {isRegister ? 'Hai già un account?' : 'Non hai un account?'}{' '}
             <button
               type="button"
-              className="text-primary-500 font-semibold hover:underline"
+              className="text-[var(--primary-500)] font-semibold hover:underline"
               onClick={() => {
                 setIsRegister(!isRegister);
                 setError('');

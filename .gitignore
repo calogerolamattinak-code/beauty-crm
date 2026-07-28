@@ -27,3 +27,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Business ops / marketing — dati sensibili, NON pubblicare su GitHub
+leads_beauty.txt
+lead_list.md
+backlink-list.md
+calendar-proposals.md
+test_email.txt
+send_campaign.sh
+osm_leads.py
+osm_query.py
+marketing-kit/

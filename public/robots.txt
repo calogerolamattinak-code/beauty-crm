@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /settings
+Disallow: /clients
+Disallow: /services
+Disallow: /calendar
+Disallow: /checkout
+Disallow: /onboarding
+
+Sitemap: https://beautycrm.website/sitemap.xml

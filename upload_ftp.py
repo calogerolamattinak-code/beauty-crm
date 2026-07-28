@@ -1,15 +1,31 @@
+"""Deploy manuale della SPA su Hostinger via FTP.
+
+Le credenziali si leggono da variabili d'ambiente — MAI committare password.
+
+Uso:
+    FTP_USER=u283873288.leo FTP_PASS=... python3 upload_ftp.py
+
+Nota: il deploy normale avviene via GitHub Actions (.github/workflows/deploy.yml).
+Questo script resta come fallback manuale.
+"""
 import ftplib
 import os
+
+FTP_HOST = os.environ.get("FTP_HOST", "82.198.228.26")
+FTP_USER = os.environ["FTP_USER"]  # obbligatoria
+FTP_PASS = os.environ["FTP_PASS"]  # obbligatoria
 
 dist = "/opt/data/beauty-crm/dist"
 
 ftp = ftplib.FTP()
-ftp.connect("82.198.228.26", 21, timeout=10)
-ftp.login("u283873288.leo", "hZ913=36U5J/UK?7")
+ftp.connect(FTP_HOST, 21, timeout=10)
+ftp.login(FTP_USER, FTP_PASS)
 ftp.cwd("/")
 
-for fname in ["index.html", "logo.jpg", "logo.png", "favicon.svg", "icons.svg"]:
+for fname in ["index.html", "logo.jpg", "logo.png", "favicon.svg", "icons.svg", "og-banner.png", "product-mockup.png", "og-banner.html", "sitemap.xml", "robots.txt", "sw.js", "manifest.json", "favicon.ico"]:
     local = os.path.join(dist, fname)
+    if not os.path.isfile(local):
+        continue
     with open(local, "rb") as f:
         ftp.storbinary(f"STOR {fname}", f)
     print(f"  OK: {fname}")
@@ -17,6 +33,22 @@ for fname in ["index.html", "logo.jpg", "logo.png", "favicon.svg", "icons.svg"]:
 with open(os.path.join(dist, ".htaccess"), "rb") as f:
     ftp.storbinary("STOR .htaccess", f)
 print("  OK: .htaccess")
+
+# Upload logos
+logos_local = os.path.join(dist, "logos")
+if os.path.isdir(logos_local):
+    try:
+        ftp.cwd("logos")
+    except:
+        ftp.mkd("logos")
+        ftp.cwd("logos")
+    for fname in sorted(os.listdir(logos_local)):
+        local = os.path.join(logos_local, fname)
+        if os.path.isfile(local):
+            with open(local, "rb") as f:
+                ftp.storbinary(f"STOR {fname}", f)
+            print(f"  OK: logos/{fname}")
+    ftp.cwd("/")
 
 try:
     ftp.cwd("assets")
@@ -45,16 +77,6 @@ for fname in sorted(new_assets):
         with open(local, "rb") as f:
             ftp.storbinary(f"STOR {fname}", f)
         print(f"  OK: assets/{fname}")
-
-ftp.cwd("/")
-print("\nFinal files:")
-for f in sorted(ftp.nlst()):
-    if f not in ('.', '..'):
-        print(f"  {f}")
-print("Assets:")
-for f in sorted(ftp.nlst("assets")):
-    if f not in ('.', '..'):
-        print(f"  {f}")
 
 ftp.quit()
 print("\n✅ Upload completato!")

@@ -10,16 +10,38 @@ const db = admin.firestore();
  */
 exports.createCheckoutSession = functions.https.onCall(
   async (data, context) => {
-    if (!context.auth) {
+    functions.logger.info('createCheckoutSession called', {
+      hasAuth: !!context.auth,
+      authUid: context.auth?.uid,
+      dataKeys: Object.keys(data || {}),
+      dataUserId: data?.userId,
+      dataEmail: data?.email,
+    });
+
+    // Prefer context.auth (token), fallback to explicit params
+    const userId = context.auth?.uid || data?.userId;
+    const email = context.auth?.token?.email || data?.email;
+
+    if (!userId) {
+      functions.logger.error('No userId found — auth and data both empty', {
+        hasAuth: !!context.auth,
+        data: JSON.stringify(data),
+      });
       throw new functions.https.HttpsError(
         'unauthenticated', 'Devi essere loggato per passare a Premium'
       );
     }
 
-    const userId = context.auth.uid;
+    // Ottieni dati utente
     const userDoc = await db.collection('users').doc(userId).get();
     const userData = userDoc.data();
-    const email = userData?.email || context.auth.token.email;
+    if (!userDoc.exists) {
+      throw new functions.https.HttpsError('not-found', 'Utente non trovato');
+    }
+    const userEmail = email || userData?.email;
+    if (!userEmail) {
+      throw new functions.https.HttpsError('failed-precondition', 'Email utente mancante');
+    }
 
     const stripeSecretKey = functions.config().stripe.secret_key;
     if (!stripeSecretKey) {
@@ -42,7 +64,7 @@ exports.createCheckoutSession = functions.https.onCall(
           price: priceId,
           quantity: 1,
         }],
-        customer_email: email,
+        customer_email: userEmail,
         client_reference_id: userId,
         metadata: { userId },
         success_url: `${appUrl}/dashboard?upgrade=success`,
@@ -57,7 +79,7 @@ exports.createCheckoutSession = functions.https.onCall(
         code: stripeErr?.code,
         statusCode: stripeErr?.statusCode,
       });
-      throw new functions.https.HttpsError('internal', `Errore Stripe: ${stripeErr?.message}`);
+      throw new functions.https.HttpsError('internal', `Errore Stripe: ${stripeErr?.message || 'errore sconosciuto'}`);
     }
   }
 );
@@ -114,61 +136,146 @@ exports.stripeWebhook = functions.https.onRequest(
 /**
  * Promemoria WhatsApp giornalieri (Premium)
  * Ogni giorno alle 8:00 (Europe/Rome)
+ * Invia via Meta WhatsApp Cloud API (credenziali centralizzate Beauty CRM)
  */
 exports.sendWhatsAppReminders = onSchedule(
-  { schedule: '0 8 * * *', timeZone: 'Europe/Rome' },
-  async (event) => {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
+   { schedule: '0 8 * * *', timeZone: 'Europe/Rome' },
+   async (event) => {
+     const tomorrow = new Date();
+     tomorrow.setDate(tomorrow.getDate() + 1);
+     tomorrow.setHours(0, 0, 0, 0);
 
-    const dayAfter = new Date(tomorrow);
-    dayAfter.setDate(dayAfter.getDate() + 1);
+     const dayAfter = new Date(tomorrow);
+     dayAfter.setDate(dayAfter.getDate() + 1);
 
-    const snapshot = await db.collection('appointments')
-      .where('startTime', '>=', tomorrow)
-      .where('startTime', '<', dayAfter)
-      .where('status', '==', 'confirmed')
-      .where('reminderSent', '==', false)
-      .get();
+     // Legge credenziali centralizzate dalle Firebase Functions config
+     const waPhoneNumberId = functions.config().whatsapp?.phone_number_id;
+     const waAccessToken = functions.config().whatsapp?.access_token;
 
-    if (snapshot.empty) {
-      functions.logger.info('No appointments tomorrow — skipping reminders');
-      return;
-    }
+     if (!waPhoneNumberId || !waAccessToken) {
+       functions.logger.error('WhatsApp API not configured — set firebase functions:config:set whatsapp.phone_number_id=... whatsapp.access_token=...');
+       return;
+     }
 
-    const sent = [];
+     const snapshot = await db.collection('appointments')
+       .where('startTime', '>=', tomorrow)
+       .where('startTime', '<', dayAfter)
+       .where('status', '==', 'confirmed')
+       .where('reminderSent', '==', false)
+       .get();
 
-    for (const doc of snapshot) {
-      const appointment = doc.data();
-      const userDoc = await db.collection('users').doc(appointment.userId).get();
-      const user = userDoc.data();
+     if (snapshot.empty) {
+       functions.logger.info('No appointments tomorrow — skipping reminders');
+       return;
+     }
 
-      if (!user?.isPremium || !user?.settings?.reminderEnabled) continue;
-      if (!appointment.clientPhone) continue;
+     const sent = [];
+     const errors = [];
 
-      const startTime = appointment.startTime.toDate();
-      const time = startTime.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+     for (const doc of snapshot) {
+       const appointment = doc.data();
+       const userDoc = await db.collection('users').doc(appointment.userId).get();
+       const user = userDoc.data();
 
-      const message = `Ciao ${appointment.clientName}! 👋\n\nTi ricordiamo il tuo appuntamento da ${user.salonName || 'salone'} domani alle ${time} per ${appointment.serviceName}.\n\nA domani! 💇‍♀️`;
+       // Salta se: non Premium, reminder disabilitato, o niente telefono cliente
+       if (!user?.isPremium) continue;
+       if (!user?.settings?.reminderEnabled) continue;
+       if (!appointment.clientPhone) continue;
 
-      functions.logger.info(`Would send WhatsApp to ${appointment.clientPhone}: ${message}`);
+       const startTime = appointment.startTime.toDate();
+       const time = startTime.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+       const salonName = user.salonName || 'Salone';
 
-      // In produzione con Twilio:
-      // await twilioClient.messages.create({
-      //   from: `whatsapp:${functions.config().twilio.whatsapp_number}`,
-      //   to: `whatsapp:${appointment.clientPhone}`,
-      //   body: message,
-      // });
+       // Pulisce numero cliente: rimuove +, spazi, trattini
+       const cleanPhone = appointment.clientPhone.replace(/[^\d]/g, '');
+       const to = cleanPhone.startsWith('39') ? cleanPhone : `39${cleanPhone}`;
 
-      await db.collection('appointments').doc(doc.id).update({
-        reminderSent: true,
-      });
+       try {
+         // Meta WhatsApp Cloud API — usa template (obbligatorio per messaggi proattivi)
+         const response = await fetch(
+           `https://graph.facebook.com/v21.0/${waPhoneNumberId}/messages`,
+           {
+             method: 'POST',
+             headers: {
+               'Authorization': `Bearer ${waAccessToken}`,
+               'Content-Type': 'application/json',
+             },
+             body: JSON.stringify({
+               messaging_product: 'whatsapp',
+               recipient_type: 'individual',
+               to: to,
+               type: 'template',
+               template: {
+                 name: 'appointment_reminder',
+                 language: { code: 'it' },
+                 components: [{
+                   type: 'body',
+                   parameters: [
+                     { type: 'text', text: appointment.clientName },
+                     { type: 'text', text: salonName },
+                     { type: 'text', text: time },
+                     { type: 'text', text: appointment.serviceName },
+                   ],
+                 }],
+               },
+             }),
+           }
+         );
 
-      sent.push(appointment.clientName);
-    }
+         const result = await response.json();
 
-    functions.logger.info(`Sent ${sent.length} WhatsApp reminders for: ${sent.join(', ')}`);
-    return { sent: sent.length };
-  }
-);
+         if (!response.ok) {
+           // Se errore per template mancante/non approvato, prova con messaggio libero
+           if (response.status === 403) {
+             functions.logger.warn(`Template not approved, trying free-form message for ${appointment.clientName}`);
+             const fallbackResponse = await fetch(
+               `https://graph.facebook.com/v21.0/${waPhoneNumberId}/messages`,
+               {
+                 method: 'POST',
+                 headers: {
+                   'Authorization': `Bearer ${waAccessToken}`,
+                   'Content-Type': 'application/json',
+                 },
+                 body: JSON.stringify({
+                   messaging_product: 'whatsapp',
+                   recipient_type: 'individual',
+                   to: to,
+                   type: 'text',
+                   text: {
+                     preview_url: false,
+                     body: `Ciao ${appointment.clientName}! 👋\n\nTi ricordiamo il tuo appuntamento da ${salonName} domani alle ${time} per ${appointment.serviceName}.\n\nA domani! 💇‍♀️`,
+                   },
+                 }),
+               }
+             );
+             const fallbackResult = await fallbackResponse.json();
+             if (!fallbackResponse.ok) {
+               throw new Error(`WhatsApp fallback error: ${JSON.stringify(fallbackResult)}`);
+             }
+           } else {
+             throw new Error(`WhatsApp API error: ${JSON.stringify(result)}`);
+           }
+         }
+
+         // Segna come inviato
+         await db.collection('appointments').doc(doc.id).update({
+           reminderSent: true,
+         });
+
+         sent.push(appointment.clientName);
+         functions.logger.info(`WhatsApp reminder sent to ${appointment.clientName} (${to})`);
+       } catch (err) {
+         errors.push({ client: appointment.clientName, error: err.message });
+         functions.logger.error(`Failed to send WhatsApp reminder to ${appointment.clientName}:`, err.message);
+       }
+     }
+
+     functions.logger.info(`WhatsApp reminders: ${sent.length} sent, ${errors.length} errors`);
+     if (sent.length > 0) {
+       functions.logger.info(`Sent to: ${sent.join(', ')}`);
+     }
+     if (errors.length > 0) {
+       functions.logger.error(`Errors: ${errors.map(e => `${e.client}: ${e.error}`).join(' | ')}`);
+     }
+   }
+ );

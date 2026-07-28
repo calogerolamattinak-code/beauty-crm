@@ -8,7 +8,7 @@ import {
   signInWithPopup,
   type User as FirebaseUser,
 } from 'firebase/auth';
-import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, onSnapshot, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
 import type { User, UserSettings } from '../types';
 
@@ -35,7 +35,6 @@ const defaultSettings: UserSettings = {
   breakDuration: 15,
   reminderEnabled: false,
   reminderHoursBefore: 24,
-  whatsappNumber: '',
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -46,34 +45,59 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
+    const unsubUserRef = { current: () => {} };
+
+    const unsubAuth = onAuthStateChanged(auth, (fbUser) => {
       setFirebaseUser(fbUser);
+      // Clean up previous user listener
+      unsubUserRef.current();
+
       if (fbUser) {
-        // Fetch user data from Firestore
-        const userDoc = await getDoc(doc(db, 'users', fbUser.uid));
-        if (userDoc.exists()) {
-          setUser(userDoc.data() as User);
-        } else {
-          // New user — minimal data, needs onboarding
-          setUser({
-            id: fbUser.uid,
-            name: fbUser.displayName || '',
-            email: fbUser.email || '',
-            phone: fbUser.phoneNumber || '',
-            salonName: '',
-            photoURL: fbUser.photoURL || '',
-            createdAt: new Date(),
-            isPremium: false,
-            settings: defaultSettings,
-          });
-        }
+        // Listen to user document in real-time — auto-updates after Settings saves
+        const unsubUser = onSnapshot(
+          doc(db, 'users', fbUser.uid),
+          (snap) => {
+            if (snap.exists()) {
+              setUser(snap.data() as User);
+            } else {
+              // New user — create Firestore doc so updateDoc works in Settings/Onboarding
+              const newUser: User = {
+                id: fbUser.uid,
+                name: fbUser.displayName || '',
+                email: fbUser.email || '',
+                phone: fbUser.phoneNumber || '',
+                salonName: '',
+                photoURL: fbUser.photoURL || '',
+                createdAt: new Date(),
+                isPremium: false,
+                settings: defaultSettings,
+              };
+              setDoc(doc(db, 'users', fbUser.uid), {
+                ...newUser,
+                createdAt: serverTimestamp(),
+              }).catch((e) =>
+                console.error('Error creating user doc for Google sign-in:', e)
+              );
+              setUser(newUser);
+            }
+            setLoading(false);
+          },
+          (error) => {
+            console.error('Error listening to user doc:', error);
+            setLoading(false);
+          }
+        );
+        unsubUserRef.current = unsubUser;
       } else {
         setUser(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
 
-    return unsubscribe;
+    return () => {
+      unsubAuth();
+      unsubUserRef.current();
+    };
   }, []);
 
   const signIn = async (email: string, password: string) => {
