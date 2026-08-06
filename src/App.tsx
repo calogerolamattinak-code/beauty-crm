@@ -9,6 +9,9 @@ import { Login } from './pages/Login';
 import { Terms } from './pages/Terms';
 import { Privacy } from './pages/Privacy';
 import { About } from './pages/About';
+import { Prezzi } from './pages/Prezzi';
+import { GestionaleParrucchieri } from './pages/GestionaleParrucchieri';
+import { GestionaleCentriEstetici } from './pages/GestionaleCentriEstetici';
 import { NotFound } from './pages/NotFound';
 
 // Lazy load pages that are only for logged-in users
@@ -66,6 +69,9 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+      <Route path="/prezzi" element={<Prezzi />} />
+      <Route path="/gestionale-parrucchieri" element={<GestionaleParrucchieri />} />
+      <Route path="/gestionale-centri-estetici" element={<GestionaleCentriEstetici />} />
       <Route path="/termini" element={<Terms />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/chi-siamo" element={<About />} />

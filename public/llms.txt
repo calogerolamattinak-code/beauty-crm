@@ -5,6 +5,9 @@
 ## Pagine principali
 
 - [Homepage](https://beautycrm.website/): funzionalità, come funziona, prezzi e FAQ del gestionale per saloni
+- [Prezzi](https://beautycrm.website/prezzi): piani Free e Premium a confronto, FAQ sui costi, zero commissioni
+- [Gestionale per parrucchieri e barberie](https://beautycrm.website/gestionale-parrucchieri): agenda, schede cliente e promemoria WhatsApp per saloni di acconciatura
+- [Gestionale per centri estetici](https://beautycrm.website/gestionale-centri-estetici): appuntamenti, trattamenti e statistiche per centri estetici
 - [Chi siamo](https://beautycrm.website/chi-siamo): missione, valori e team del progetto
 - [Privacy Policy](https://beautycrm.website/privacy): informativa GDPR sul trattamento dei dati
 - [Termini e Condizioni](https://beautycrm.website/termini): licenza SaaS, rimborsi e recesso
