@@ -67,6 +67,22 @@ const SEO_MAP: Record<string, SEOData> = {
     ogTitle: 'Gestionale per Centri Estetici | Beauty CRM',
     ogDescription: 'Agenda, trattamenti e statistiche per il tuo centro estetico. Gratis fino a 30 clienti, senza commissioni.',
   },
+  '/blog': {
+    title: 'Blog — Guide per Parrucchieri e Centri Estetici | Beauty CRM',
+    description: 'Guide pratiche per gestire meglio il tuo salone: meno no-show, più clienti fidelizzati, strumenti digitali spiegati senza paroloni.',
+  },
+  '/blog/ridurre-no-show-salone': {
+    title: 'Come Ridurre i No-Show nel Salone: 7 Strategie | Beauty CRM',
+    description: 'I clienti che non si presentano costano cari. 7 strategie concrete — dai promemoria WhatsApp automatici alla lista d\u2019attesa — per ridurre i no-show fino al 50%.',
+  },
+  '/blog/scegliere-gestionale-parrucchieri': {
+    title: 'Come Scegliere un Gestionale per Parrucchieri: Checklist 2026 | Beauty CRM',
+    description: 'Costo reale, commissioni, promemoria, dati: la checklist in 8 punti per valutare un gestionale per saloni, con le 6 domande da fare alla demo.',
+  },
+  '/blog/costo-gestionale-salone-2026': {
+    title: 'Quanto Costa un Gestionale per Salone nel 2026 | Beauty CRM',
+    description: 'Commissioni, abbonamento fisso o freemium? Guida ai modelli di prezzo dei gestionali per saloni con esempi di costo annuo reale.',
+  },
 };
 
 export function useSEO() {

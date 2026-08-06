@@ -12,6 +12,10 @@ import { About } from './pages/About';
 import { Prezzi } from './pages/Prezzi';
 import { GestionaleParrucchieri } from './pages/GestionaleParrucchieri';
 import { GestionaleCentriEstetici } from './pages/GestionaleCentriEstetici';
+import { Blog } from './pages/blog/Blog';
+import { NoShow } from './pages/blog/NoShow';
+import { ScegliereGestionale } from './pages/blog/ScegliereGestionale';
+import { CostoGestionale } from './pages/blog/CostoGestionale';
 import { NotFound } from './pages/NotFound';
 
 // Lazy load pages that are only for logged-in users
@@ -72,6 +76,10 @@ function AppRoutes() {
       <Route path="/prezzi" element={<Prezzi />} />
       <Route path="/gestionale-parrucchieri" element={<GestionaleParrucchieri />} />
       <Route path="/gestionale-centri-estetici" element={<GestionaleCentriEstetici />} />
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/blog/ridurre-no-show-salone" element={<NoShow />} />
+      <Route path="/blog/scegliere-gestionale-parrucchieri" element={<ScegliereGestionale />} />
+      <Route path="/blog/costo-gestionale-salone-2026" element={<CostoGestionale />} />
       <Route path="/termini" element={<Terms />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/chi-siamo" element={<About />} />

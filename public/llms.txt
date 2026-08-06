@@ -9,6 +9,10 @@
 - [Gestionale per parrucchieri e barberie](https://beautycrm.website/gestionale-parrucchieri): agenda, schede cliente e promemoria WhatsApp per saloni di acconciatura
 - [Gestionale per centri estetici](https://beautycrm.website/gestionale-centri-estetici): appuntamenti, trattamenti e statistiche per centri estetici
 - [Chi siamo](https://beautycrm.website/chi-siamo): missione, valori e team del progetto
+- [Blog / Guide](https://beautycrm.website/blog): guide pratiche per gestire un salone di bellezza
+- [Come ridurre i no-show nel salone](https://beautycrm.website/blog/ridurre-no-show-salone): 7 strategie concrete, dai promemoria WhatsApp alla lista d'attesa
+- [Come scegliere un gestionale per parrucchieri](https://beautycrm.website/blog/scegliere-gestionale-parrucchieri): checklist 2026 in 8 punti + domande per la demo
+- [Quanto costa un gestionale per salone nel 2026](https://beautycrm.website/blog/costo-gestionale-salone-2026): modelli di prezzo a confronto con esempi
 - [Privacy Policy](https://beautycrm.website/privacy): informativa GDPR sul trattamento dei dati
 - [Termini e Condizioni](https://beautycrm.website/termini): licenza SaaS, rimborsi e recesso
 
