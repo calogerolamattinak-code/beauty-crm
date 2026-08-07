@@ -713,8 +713,10 @@ export function Landing() {
               <div className="space-y-2">
                 <a href="#features" onClick={(e) => { e.preventDefault(); scrollTo('#features'); }} className="block text-xs sm:text-sm text-[#6B6B82] hover:text-[#D0D0DC] transition-colors min-h-[36px]">Funzionalità</a>
                 <a href="#how" onClick={(e) => { e.preventDefault(); scrollTo('#how'); }} className="block text-xs sm:text-sm text-[#6B6B82] hover:text-[#D0D0DC] transition-colors min-h-[36px]">Come funziona</a>
-                <a href="#pricing" onClick={(e) => { e.preventDefault(); scrollTo('#pricing'); }} className="block text-xs sm:text-sm text-[#6B6B82] hover:text-[#D0D0DC] transition-colors min-h-[36px]">Piani e prezzi</a>
                 <a href="#faq" onClick={(e) => { e.preventDefault(); scrollTo('#faq'); }} className="block text-xs sm:text-sm text-[#6B6B82] hover:text-[#D0D0DC] transition-colors min-h-[36px]">Domande frequenti</a>
+                <Link to="/prezzi" className="block text-xs sm:text-sm text-[#6B6B82] hover:text-[#D0D0DC] transition-colors min-h-[36px]">Prezzi</Link>
+                <Link to="/gestionale-parrucchieri" className="block text-xs sm:text-sm text-[#6B6B82] hover:text-[#D0D0DC] transition-colors min-h-[36px]">Per parrucchieri</Link>
+                <Link to="/gestionale-centri-estetici" className="block text-xs sm:text-sm text-[#6B6B82] hover:text-[#D0D0DC] transition-colors min-h-[36px]">Per centri estetici</Link>
                 <Link to="/chi-siamo" className="block text-xs sm:text-sm text-[#6B6B82] hover:text-[#D0D0DC] transition-colors min-h-[36px]">Chi siamo</Link>
               </div>
             </div>

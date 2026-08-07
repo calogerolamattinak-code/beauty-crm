@@ -49,6 +49,24 @@ const SEO_MAP: Record<string, SEOData> = {
     ogTitle: 'Chi Siamo | Beauty CRM — Il gestionale per il tuo salone',
     ogDescription: 'Scopri la storia, la missione e i valori di Beauty CRM. Un progetto italiano per la digitalizzazione dei saloni di bellezza.',
   },
+  '/prezzi': {
+    title: 'Gestionale per Parrucchieri e Centri Estetici: Prezzi 2026 | Beauty CRM',
+    description: 'Quanto costa un gestionale per salone? Beauty CRM: gratis fino a 30 clienti, Premium a 9,90€/mese senza commissioni sulle prenotazioni. Confronta i piani.',
+    ogTitle: 'Prezzi Beauty CRM — Gratis fino a 30 clienti, Premium 9,90€/mese',
+    ogDescription: 'Piano Free a 0€ per sempre. Premium a 9,90€/mese senza commissioni né vincoli. Scopri il confronto completo.',
+  },
+  '/gestionale-parrucchieri': {
+    title: 'Gestionale per Parrucchieri e Barberie | Beauty CRM',
+    description: 'Il gestionale per parrucchieri 100% italiano: agenda smart, schede cliente, promemoria WhatsApp anti no-show e statistiche. Gratis fino a 30 clienti.',
+    ogTitle: 'Gestionale per Parrucchieri | Beauty CRM',
+    ogDescription: 'Agenda, schede cliente e promemoria WhatsApp per il tuo salone. Gratis fino a 30 clienti, senza commissioni.',
+  },
+  '/gestionale-centri-estetici': {
+    title: 'Gestionale per Centri Estetici | Beauty CRM',
+    description: 'Software gestionale per centri estetici: appuntamenti, schede cliente con trattamenti e preferenze, promemoria WhatsApp e report. Gratis fino a 30 clienti.',
+    ogTitle: 'Gestionale per Centri Estetici | Beauty CRM',
+    ogDescription: 'Agenda, trattamenti e statistiche per il tuo centro estetico. Gratis fino a 30 clienti, senza commissioni.',
+  },
 };
 
 export function useSEO() {
