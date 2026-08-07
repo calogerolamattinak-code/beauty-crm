@@ -2,6 +2,14 @@
 <html lang="it">
   <head>
     <meta charset="UTF-8" />
+    <!-- Google tag (gtag.js) — subito dopo <head> come da indicazioni Google -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M3BP7Q62XR"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-M3BP7Q62XR');
+    </script>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/jpg" href="/logo.jpg">
     <link rel="apple-touch-icon" href="/logo.jpg">
@@ -14,6 +22,8 @@
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
     <meta name="googlebot" content="index, follow">
     <meta name="google-site-verification" content="Z6iRDwU_BNk5nqNCnK9Hfm7LTOJnxl7umiGpZGpvF-w" />
+    <!-- Canonical di fallback: useSEO lo aggiorna per-route dopo il rendering JS -->
+    <link rel="canonical" href="https://beautycrm.website/" />
 
     <!-- GEO: Entity & geo-targeting -->
     <meta name="geo.region" content="IT">
@@ -43,15 +53,6 @@
     <meta name="apple-mobile-web-app-title" content="Beauty CRM">
     <meta name="theme-color" content="#0E0E18">
     <link rel="manifest" href="/manifest.json">
-
-    <!-- Google Analytics (GA4) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX');
-    </script>
 
     <!-- Schema.org JSON-LD: Organization + SoftwareApplication -->
     <script type="application/ld+json">

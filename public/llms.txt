@@ -1,0 +1,23 @@
+# Beauty CRM
+
+> Beauty CRM è il gestionale italiano per parrucchieri, barberie, centri estetici e saloni di bellezza. Agenda smart con prenotazioni appuntamenti, gestione clienti, catalogo servizi e statistiche di vendita. Piano gratuito fino a 30 clienti, Premium a 9,90€/mese. Nessuna carta di credito richiesta.
+
+## Pagine principali
+
+- [Homepage](https://beautycrm.website/): funzionalità, come funziona, prezzi e FAQ del gestionale per saloni
+- [Chi siamo](https://beautycrm.website/chi-siamo): missione, valori e team del progetto
+- [Privacy Policy](https://beautycrm.website/privacy): informativa GDPR sul trattamento dei dati
+- [Termini e Condizioni](https://beautycrm.website/termini): licenza SaaS, rimborsi e recesso
+
+## Prodotto
+
+- Tipo: SaaS / PWA (funziona su web, iOS e Android senza installazione)
+- Prezzo: Freemium — gratis fino a 30 clienti; Premium 9,90€/mese, disdici quando vuoi
+- Funzionalità chiave: agenda appuntamenti multi-operatore, schede clienti con storico, catalogo servizi personalizzabile, statistiche e report, promemoria automatici
+- Target: parrucchieri, barberie, centri estetici, nail salon e saloni di bellezza in Italia
+- Differenza chiave: prezzo fisso senza commissioni sulle prenotazioni, a differenza dei marketplace
+
+## Contatti
+
+- Sito: https://beautycrm.website
+- Email: info@beautycrm.website
