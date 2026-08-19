@@ -8,6 +8,7 @@ interface ThemeContextType {
   theme: Theme;
   themeName: ThemeName;
   setTheme: (name: ThemeName) => Promise<void>;
+  toggleMode: () => Promise<void>;
   loading: boolean;
 }
 
@@ -20,20 +21,27 @@ function applyThemeToDOM(theme: Theme) {
     root.style.setProperty(key, value);
   });
   document.documentElement.setAttribute('data-theme', theme.name);
+  if (theme.mode === 'dark') {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const { firebaseUser } = useAuth();
-  const [themeName, setThemeName] = useState<ThemeName>('green');
+  const [themeName, setThemeName] = useState<ThemeName>(() => {
+    const local = localStorage.getItem('beauty_crm_theme') as ThemeName | null;
+    return local || 'dark';
+  });
   const [loading, setLoading] = useState(true);
 
-  // Load theme from Firestore on mount & user change
+  // Load theme on mount & sync with Firestore if logged in
   useEffect(() => {
     const uid = firebaseUser?.uid;
     if (!uid) {
-      // Default theme for non-logged-in users
-      applyThemeToDOM(getTheme('green'));
-      setThemeName('green');
+      const initial = getTheme(themeName);
+      applyThemeToDOM(initial);
       setLoading(false);
       return;
     }
@@ -43,17 +51,18 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         const userDoc = await getDoc(doc(db, 'users', uid));
         if (userDoc.exists()) {
           const saved = userDoc.data()?.settings?.theme as ThemeName | undefined;
-          if (saved && ['rose', 'purple', 'green'].includes(saved)) {
+          if (saved && ['dark', 'light', 'rose'].includes(saved)) {
             setThemeName(saved);
+            localStorage.setItem('beauty_crm_theme', saved);
             applyThemeToDOM(getTheme(saved));
           } else {
-            applyThemeToDOM(getTheme('green'));
+            applyThemeToDOM(getTheme(themeName));
           }
         } else {
-          applyThemeToDOM(getTheme('green'));
+          applyThemeToDOM(getTheme(themeName));
         }
       } catch {
-        applyThemeToDOM(getTheme('green'));
+        applyThemeToDOM(getTheme(themeName));
       }
       setLoading(false);
     };
@@ -63,10 +72,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const setTheme = useCallback(async (name: ThemeName) => {
     setThemeName(name);
+    localStorage.setItem('beauty_crm_theme', name);
     const theme = getTheme(name);
     applyThemeToDOM(theme);
 
-    // Save to Firestore
     const uid = firebaseUser?.uid;
     if (uid) {
       try {
@@ -79,8 +88,13 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
   }, [firebaseUser?.uid]);
 
+  const toggleMode = useCallback(async () => {
+    const next: ThemeName = themeName === 'light' ? 'dark' : 'light';
+    await setTheme(next);
+  }, [themeName, setTheme]);
+
   return (
-    <ThemeContext.Provider value={{ theme: getTheme(themeName), themeName, setTheme, loading }}>
+    <ThemeContext.Provider value={{ theme: getTheme(themeName), themeName, setTheme, toggleMode, loading }}>
       {children}
     </ThemeContext.Provider>
   );

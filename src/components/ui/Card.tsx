@@ -9,7 +9,9 @@ interface CardProps {
 export function Card({ children, className = '', onClick }: CardProps) {
   return (
     <div
-      className={`bg-[var(--bg-card)] rounded-2xl border border-[var(--border-light)] p-4 ${onClick ? 'cursor-pointer card-hover' : ''} ${className}`}
+      className={`bg-[var(--bg-card)] rounded-2xl border border-[var(--border-light)] p-5 shadow-sm transition-all duration-200 ${
+        onClick ? 'cursor-pointer hover:border-[var(--border-strong)] hover:shadow-md hover:translate-y-[-1px]' : ''
+      } ${className}`}
       onClick={onClick}
     >
       {children}
@@ -19,7 +21,7 @@ export function Card({ children, className = '', onClick }: CardProps) {
 
 export function CardHeader({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
-    <div className={`flex items-center justify-between mb-3 ${className}`}>
+    <div className={`flex items-center justify-between mb-4 ${className}`}>
       {children}
     </div>
   );

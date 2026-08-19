@@ -8,7 +8,9 @@ import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { PremiumBadge } from '../components/ui/PremiumGate';
 import { useSubscription, PREMIUM_PRICE } from '../lib/subscription';
-import { Bell, Smartphone, Crown, Check, Sparkles, LogOut, XCircle, Image, Upload, FileText } from 'lucide-react';
+import { useTheme } from '../hooks/useTheme';
+import { ALL_THEMES } from '../lib/themes';
+import { Bell, Smartphone, Crown, Check, Sparkles, LogOut, XCircle, Image, Upload, FileText, Palette } from 'lucide-react';
 
 interface SettingsProps {
   onGoPremium: () => void;
@@ -40,6 +42,7 @@ function getLogoUrl(user: { logo?: string | null; logoPreset?: string | null }):
 
 export function Settings({ onGoPremium }: SettingsProps) {
   const { user, firebaseUser, logout } = useAuth();
+  const { themeName, setTheme } = useTheme();
   const navigate = useNavigate();
   const { isPremium } = useSubscription();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -235,7 +238,37 @@ export function Settings({ onGoPremium }: SettingsProps) {
           </div>
         </Card>
 
-        {/* ─── Profilo ─── */}
+        {/* ─── Tema / Aspetto ─── */}
+        <Card>
+          <CardHeader>
+            <h2 className="font-bold text-[var(--text-dark)] flex items-center gap-2">
+              <Palette className="w-4 h-4 text-[var(--primary-500)]" />
+              Tema & Aspetto Visivo
+            </h2>
+          </CardHeader>
+          <div className="grid grid-cols-3 gap-3">
+            {ALL_THEMES.map((t) => {
+              const isSelected = themeName === t.name;
+              return (
+                <button
+                  key={t.name}
+                  type="button"
+                  onClick={() => setTheme(t.name)}
+                  className={`p-3 rounded-xl border flex flex-col items-center gap-2 transition-all cursor-pointer ${
+                    isSelected
+                      ? 'border-[var(--primary-500)] bg-[var(--primary-50)] text-[var(--text-dark)] shadow-sm'
+                      : 'border-[var(--border-light)] bg-[var(--bg-soft)] text-[var(--text-muted)] hover:border-[var(--border-strong)]'
+                  }`}
+                >
+                  <span className="text-xl">{t.emoji}</span>
+                  <span className="text-xs font-bold">{t.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </Card>
+
+        {/* ─── Profile ─── */}
         <Card>
           <CardHeader>
             <h2 className="font-bold text-text-dark flex items-center gap-2">

@@ -1,9 +1,10 @@
-export type ThemeName = 'rose' | 'purple' | 'green';
+export type ThemeName = 'dark' | 'light' | 'rose' | 'purple';
 
 export interface Theme {
   name: ThemeName;
   label: string;
   emoji: string;
+  mode: 'dark' | 'light';
   colors: {
     primary50: string;
     primary100: string;
@@ -20,110 +21,134 @@ export interface Theme {
     goldDark: string;
     bgWarm: string;
     bgSoft: string;
+    bgCard: string;
+    bgElevated: string;
+    bgHover: string;
     textDark: string;
     textMuted: string;
+    textDim: string;
     success: string;
     warning: string;
     danger: string;
     border: string;
+    borderLight: string;
+    borderStrong: string;
   };
 }
 
-export const THEME_ROSE: Theme = {
-  name: 'rose',
-  label: 'Rosa',
-  emoji: '💕',
+export const THEME_DARK: Theme = {
+  name: 'dark',
+  label: 'Dark Luxury',
+  emoji: '🌙',
+  mode: 'dark',
   colors: {
-    primary50: '#3D1A2B',
-    primary100: '#5A2038',
-    primary200: '#8A2D52',
-    primary300: '#B84070',
-    primary400: '#D45080',
-    primary500: '#E8537E',
-    primary600: '#FF6B9D',
-    primary700: '#FF8BB5',
-    primary800: '#FFB8D0',
-    primary900: '#FFE0EA',
-    gradient: 'linear-gradient(135deg, #FF6B9D 0%, #C44A8C 100%)',
-    gold: '#D4A853',
-    goldDark: '#C49A3C',
-    bgWarm: '#0a0510',
-    bgSoft: '#0a0a1a',
-    textDark: '#F1F1F6',
-    textMuted: '#8A8A9E',
-    success: '#4CAF50',
-    warning: '#FF9800',
-    danger: '#EF5350',
-    border: 'rgba(255,255,255,0.06)',
-  },
-};
-
-export const THEME_PURPLE: Theme = {
-  name: 'purple',
-  label: 'Viola',
-  emoji: '💜',
-  colors: {
-    primary50: '#1E0A2E',
-    primary100: '#2D1050',
-    primary200: '#4D1A80',
-    primary300: '#6B28A0',
-    primary400: '#8B3FC0',
-    primary500: '#9C27B0',
-    primary600: '#AB47BC',
-    primary700: '#BA68C8',
-    primary800: '#CE93D8',
-    primary900: '#E1BEE7',
-    gradient: 'linear-gradient(135deg, #AB47BC 0%, #6A1B9A 100%)',
-    gold: '#CE93D8',
-    goldDark: '#BA68C8',
-    bgWarm: '#050010',
-    bgSoft: '#0a0a1a',
-    textDark: '#F1F1F6',
-    textMuted: '#8A8A9E',
-    success: '#4CAF50',
-    warning: '#FF9800',
-    danger: '#EF5350',
-    border: 'rgba(255,255,255,0.06)',
-  },
-};
-
-export const THEME_GREEN: Theme = {
-  name: 'green',
-  label: 'Verde',
-  emoji: '🌿',
-  colors: {
-    primary50: '#0D2818',
-    primary100: '#143A24',
-    primary200: '#1D5A36',
-    primary300: '#2A844E',
-    primary400: '#38A865',
-    primary500: '#4CAF50',
-    primary600: '#66BB6A',
-    primary700: '#81C784',
-    primary800: '#A5D6A7',
-    primary900: '#C8E6C9',
-    gradient: 'linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%)',
+    primary50: '#1A121F',
+    primary100: '#2A1833',
+    primary200: '#431E51',
+    primary300: '#6D2B82',
+    primary400: '#A23EB8',
+    primary500: '#D946EF',
+    primary600: '#EC4899',
+    primary700: '#DB2777',
+    primary800: '#BE185D',
+    primary900: '#9D174D',
+    gradient: 'linear-gradient(135deg, #EC4899 0%, #A855F7 100%)',
     gold: '#F59E0B',
     goldDark: '#D97706',
-    bgWarm: '#040a08',
-    bgSoft: '#0a120e',
-    textDark: '#F1F1F6',
-    textMuted: '#8A9E8A',
-    success: '#4CAF50',
-    warning: '#FF9800',
-    danger: '#EF5350',
-    border: 'rgba(255,255,255,0.06)',
+    bgWarm: '#09090E',
+    bgSoft: '#0D0D14',
+    bgCard: '#14141E',
+    bgElevated: '#1B1B28',
+    bgHover: '#232334',
+    textDark: '#F8FAFC',
+    textMuted: '#94A3B8',
+    textDim: '#64748B',
+    success: '#10B981',
+    warning: '#F59E0B',
+    danger: '#EF4444',
+    border: 'rgba(255, 255, 255, 0.06)',
+    borderLight: 'rgba(255, 255, 255, 0.09)',
+    borderStrong: 'rgba(255, 255, 255, 0.16)',
   },
 };
 
-export const ALL_THEMES: Theme[] = [THEME_ROSE, THEME_PURPLE, THEME_GREEN];
+export const THEME_LIGHT: Theme = {
+  name: 'light',
+  label: 'Luxe Light',
+  emoji: '☀️',
+  mode: 'light',
+  colors: {
+    primary50: '#FDF2F8',
+    primary100: '#FCE7F3',
+    primary200: '#FBCFE8',
+    primary300: '#F9A8D4',
+    primary400: '#F472B6',
+    primary500: '#DB2777',
+    primary600: '#E11D48',
+    primary700: '#BE123C',
+    primary800: '#9F1239',
+    primary900: '#881337',
+    gradient: 'linear-gradient(135deg, #DB2777 0%, #9333EA 100%)',
+    gold: '#D97706',
+    goldDark: '#B45309',
+    bgWarm: '#F8FAFC',
+    bgSoft: '#F1F5F9',
+    bgCard: '#FFFFFF',
+    bgElevated: '#FFFFFF',
+    bgHover: '#F8FAFC',
+    textDark: '#0F172A',
+    textMuted: '#475569',
+    textDim: '#94A3B8',
+    success: '#059669',
+    warning: '#D97706',
+    danger: '#DC2626',
+    border: 'rgba(15, 23, 42, 0.06)',
+    borderLight: 'rgba(15, 23, 42, 0.09)',
+    borderStrong: 'rgba(15, 23, 42, 0.16)',
+  },
+};
 
-export function getTheme(name: ThemeName): Theme {
-  switch (name) {
-    case 'rose': return THEME_ROSE;
-    case 'purple': return THEME_PURPLE;
-    case 'green': return THEME_GREEN;
-  }
+export const THEME_ROSE: Theme = {
+  name: 'rose',
+  label: 'Velvet Rose',
+  emoji: '🌸',
+  mode: 'dark',
+  colors: {
+    primary50: '#2A0E1A',
+    primary100: '#431227',
+    primary200: '#681B3C',
+    primary300: '#972455',
+    primary400: '#C73270',
+    primary500: '#F43F5E',
+    primary600: '#FB7185',
+    primary700: '#FDA4AF',
+    primary800: '#FECDD3',
+    primary900: '#FFF1F2',
+    gradient: 'linear-gradient(135deg, #F43F5E 0%, #BE123C 100%)',
+    gold: '#F59E0B',
+    goldDark: '#D97706',
+    bgWarm: '#0A0609',
+    bgSoft: '#100A0E',
+    bgCard: '#181015',
+    bgElevated: '#22161E',
+    bgHover: '#2E1E29',
+    textDark: '#FFF1F2',
+    textMuted: '#FDA4AF',
+    textDim: '#9F1239',
+    success: '#10B981',
+    warning: '#F59E0B',
+    danger: '#EF4444',
+    border: 'rgba(244, 63, 94, 0.12)',
+    borderLight: 'rgba(244, 63, 94, 0.18)',
+    borderStrong: 'rgba(244, 63, 94, 0.28)',
+  },
+};
+
+export const ALL_THEMES: Theme[] = [THEME_DARK, THEME_LIGHT, THEME_ROSE];
+
+export function getTheme(name?: ThemeName): Theme {
+  const found = ALL_THEMES.find((t) => t.name === name);
+  return found || THEME_DARK;
 }
 
 export function themeToCSSVars(theme: Theme): Record<string, string> {
@@ -144,11 +169,17 @@ export function themeToCSSVars(theme: Theme): Record<string, string> {
     '--gold-dark': c.goldDark,
     '--bg-warm': c.bgWarm,
     '--bg-soft': c.bgSoft,
+    '--bg-card': c.bgCard,
+    '--bg-elevated': c.bgElevated,
+    '--bg-hover': c.bgHover,
     '--text-dark': c.textDark,
     '--text-muted': c.textMuted,
+    '--text-dim': c.textDim,
     '--success': c.success,
     '--warning': c.warning,
     '--danger': c.danger,
     '--border': c.border,
+    '--border-light': c.borderLight,
+    '--border-strong': c.borderStrong,
   };
 }
