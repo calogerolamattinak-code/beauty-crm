@@ -28,6 +28,14 @@ function InstagramIcon({ className = "w-5 h-5" }: { className?: string }) {
     </svg>
   );
 }
+
+function TikTokIcon({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.29 0 .58.04.85.12V9.34a6.34 6.34 0 0 0-.85-.06A6.34 6.34 0 0 0 3.14 15.6a6.34 6.34 0 0 0 10.82 4.49 6.27 6.27 0 0 0 1.87-4.49V8.65a8.28 8.28 0 0 0 4.84 1.55v-3.46a4.85 4.85 0 0 1-1.08-.05z"/>
+    </svg>
+  );
+}
 import { useState } from 'react';
 import { useTheme } from '../hooks/useTheme';
 
@@ -216,9 +224,18 @@ export function Landing() {
               target="_blank"
               rel="noopener noreferrer"
               className="btn-ghost p-2 rounded-xl text-[var(--text-muted)] hover:text-[#E1306C] hover:scale-110 transition-all"
-              title="Seguici su Instagram @beautycrm.website"
+              title="Instagram @beautycrm.website"
             >
               <InstagramIcon className="w-5 h-5" />
+            </a>
+            <a
+              href="https://www.tiktok.com/@beautycrm.website"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-ghost p-2 rounded-xl text-[var(--text-muted)] hover:text-[#00F2FE] hover:scale-110 transition-all"
+              title="TikTok @beautycrm.website"
+            >
+              <TikTokIcon className="w-5 h-5" />
             </a>
             <button
               onClick={toggleMode}
@@ -251,6 +268,15 @@ export function Landing() {
               title="Instagram"
             >
               <InstagramIcon className="w-5 h-5" />
+            </a>
+            <a
+              href="https://www.tiktok.com/@beautycrm.website"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 text-[var(--text-muted)] hover:text-[#00F2FE]"
+              title="TikTok"
+            >
+              <TikTokIcon className="w-5 h-5" />
             </a>
             <button
               onClick={toggleMode}
@@ -703,44 +729,65 @@ export function Landing() {
         </div>
       </section>
 
-      {/* ─── INSTAGRAM COMMUNITY CARD ─── */}
-      <section className="py-12 px-4 sm:px-6 max-w-4xl mx-auto">
-        <a
-          href="https://www.instagram.com/beautycrm.website/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group block rounded-3xl p-6 sm:p-8 border border-[var(--border-strong)] bg-gradient-to-r from-[#F58529]/10 via-[#DD2A7B]/10 to-[#8134AF]/10 hover:border-[#DD2A7B]/40 transition-all card-hover"
-        >
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
-              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden bg-white p-1.5 shadow-xl ring-2 ring-[#DD2A7B]/30 flex-shrink-0 group-hover:scale-105 transition-transform">
+      {/* ─── SOCIAL & COMMUNITY CHANNELS ─── */}
+      <section className="py-12 px-4 sm:px-6 max-w-4xl mx-auto space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Instagram Card */}
+          <a
+            href="https://www.instagram.com/beautycrm.website/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group block rounded-3xl p-6 border border-[var(--border-strong)] bg-gradient-to-br from-[#F58529]/10 via-[#DD2A7B]/10 to-[#8134AF]/10 hover:border-[#DD2A7B]/40 transition-all card-hover"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-white p-1 shadow-md ring-2 ring-[#DD2A7B]/30 flex-shrink-0 group-hover:scale-105 transition-transform">
                 <img
                   src="/instagram-qr.png"
                   alt="Instagram QR Code Beauty CRM"
                   className="w-full h-full object-contain"
                 />
               </div>
-              <div className="space-y-1.5">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#DD2A7B]/15 text-[#E1306C] text-xs font-bold uppercase tracking-wider">
-                  <InstagramIcon className="w-3.5 h-3.5" />
-                  Community Saloni
+              <div className="space-y-1">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#DD2A7B]/15 text-[#E1306C] text-[11px] font-bold uppercase tracking-wider">
+                  <InstagramIcon className="w-3 h-3" />
+                  Instagram
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-[var(--text-dark)]">
-                  Seguici su Instagram <span className="text-[#E1306C]">@beautycrm.website</span>
+                <h3 className="text-base sm:text-lg font-bold text-[var(--text-dark)]">
+                  @beautycrm.website
                 </h3>
-                <p className="text-sm text-[var(--text-muted)] max-w-md">
-                  Inquadra il QR code o clicca qui per consigli di marketing, aggiornamenti e pillole pratiche per far crescere il tuo salone.
+                <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+                  Pillole quotidiane, consigli pratici e aggiornamenti per il tuo salone.
                 </p>
               </div>
             </div>
+          </a>
 
-            <div className="flex-shrink-0">
-              <span className="btn-primary !text-sm !py-2.5 !px-5 shadow-lg group-hover:scale-105 transition-transform">
-                Vai al Profilo <ArrowRight className="w-4 h-4" />
-              </span>
+          {/* TikTok Embed Card */}
+          <a
+            href="https://www.tiktok.com/@beautycrm.website"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group block rounded-3xl p-6 border border-[var(--border-strong)] bg-gradient-to-br from-[#00F2FE]/10 via-[#4FACFE]/5 to-[#FE0979]/10 hover:border-[#00F2FE]/40 transition-all card-hover"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-[var(--bg-card)] border border-[var(--border-strong)] flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform text-[var(--text-dark)]">
+                <TikTokIcon className="w-10 h-10 text-[#00F2FE]" />
+              </div>
+              <div className="space-y-1">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#00F2FE]/15 text-[#00F2FE] text-[11px] font-bold uppercase tracking-wider">
+                  <TikTokIcon className="w-3 h-3" />
+                  TikTok Ufficiale
+                </div>
+                <h3 className="text-base sm:text-lg font-bold text-[var(--text-dark)]">
+                  @beautycrm.website
+                </h3>
+                <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+                  Video brevi su strategie salone, azzeramento no-show e trucchi di crescita.
+                </p>
+              </div>
             </div>
-          </div>
-        </a>
+          </a>
+        </div>
       </section>
 
       {/* ─── FINAL CTA ─── */}
@@ -766,8 +813,8 @@ export function Landing() {
       {/* ─── FOOTER ─── */}
       <footer className="border-t border-[var(--border-light)] bg-[var(--bg-card)] py-12 px-4 sm:px-6 text-sm text-[var(--text-muted)]">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2">
               <img src="/logo.jpg" alt="Beauty CRM" className="w-8 h-8 rounded-lg object-cover" />
               <span className="font-bold text-[var(--text-dark)]">Beauty CRM</span>
             </div>
@@ -775,10 +822,19 @@ export function Landing() {
               href="https://www.instagram.com/beautycrm.website/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#F58529]/10 via-[#DD2A7B]/10 to-[#8134AF]/10 border border-[#DD2A7B]/20 text-[#E1306C] hover:scale-105 transition-all text-xs font-semibold"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-[#DD2A7B]/10 border border-[#DD2A7B]/20 text-[#E1306C] hover:scale-105 transition-all text-xs font-semibold"
             >
-              <InstagramIcon className="w-4 h-4" />
-              <span>@beautycrm.website</span>
+              <InstagramIcon className="w-3.5 h-3.5" />
+              <span>Instagram</span>
+            </a>
+            <a
+              href="https://www.tiktok.com/@beautycrm.website"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-[#00F2FE]/10 border border-[#00F2FE]/20 text-[#00F2FE] hover:scale-105 transition-all text-xs font-semibold"
+            >
+              <TikTokIcon className="w-3.5 h-3.5" />
+              <span>TikTok</span>
             </a>
           </div>
 
