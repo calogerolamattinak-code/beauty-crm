@@ -83,7 +83,7 @@ function AppRoutes() {
       <Route path="/termini" element={<Terms />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/chi-siamo" element={<About />} />
-      <Route path="/login" element={firebaseUser ? <Navigate to="/dashboard" replace /> : <Login />} />
+      <Route path="/login" element={firebaseUser ? <Navigate to="/calendar" replace /> : <Login />} />
 
       <Route path="/onboarding" element={
         <ProtectedRoute>
@@ -127,7 +127,7 @@ function AppRoutes() {
         </ProtectedRoute>
       } />
 
-      <Route path="*" element={firebaseUser ? <Navigate to="/dashboard" replace /> : <NotFound />} />
+      <Route path="*" element={firebaseUser ? <Navigate to="/calendar" replace /> : <NotFound />} />
     </Routes>
   );
 }

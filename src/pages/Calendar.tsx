@@ -28,6 +28,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Plus,
+  UserPlus,
   Pencil,
   Trash2,
   Bell,
@@ -37,6 +38,8 @@ import {
   Clock,
   CalendarDays,
 } from 'lucide-react';
+import { AddClientModal } from '../components/AddClientModal';
+import { useSubscription, FREE_CLIENT_LIMIT } from '../lib/subscription';
 import { formatCurrency } from '../lib/format';
 import type { Appointment, Service, Client, ServiceCategory, AppointmentOutcome } from '../types';
 
@@ -366,17 +369,27 @@ function DroppableSlot({
 
 export function Calendar() {
   const { firebaseUser } = useAuth();
+  const { features } = useSubscription();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [services, setServices] = useState<Service[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showAddClientModal, setShowAddClientModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingAppointment, setEditingAppointment] = useState<Appointment | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<{ hour: number; min: number } | null>(null);
   const [showSharedToast, setShowSharedToast] = useState(false);
   const [optimisticApps, setOptimisticApps] = useState<Appointment[]>([]);
+
+  const handleOpenAddClient = () => {
+    if (clients.length >= features.clientLimit) {
+      alert(`🔒 Hai raggiunto il limite di ${FREE_CLIENT_LIMIT} clienti del piano Free. Passa a Premium per clienti illimitati!`);
+      return;
+    }
+    setShowAddClientModal(true);
+  };
 
   const weekDates = getWeekDates(currentDate);
   const agendaScrollRef = useRef<HTMLDivElement>(null);
@@ -673,9 +686,13 @@ export function Calendar() {
           >
             <Share2 className="w-4 h-4" />
           </button>
+          <Button variant="secondary" onClick={handleOpenAddClient}>
+            <UserPlus className="w-4 h-4 mr-1.5" />
+            Cliente
+          </Button>
           <Button onClick={() => { setSelectedSlot(null); setShowAddModal(true); }}>
-            <Plus className="w-4 h-4 mr-1" />
-            Nuovo
+            <Plus className="w-4 h-4 mr-1.5" />
+            Appuntamento
           </Button>
         </div>
       </div>
@@ -815,6 +832,11 @@ export function Calendar() {
       )}
 
       {/* ─── Modals ─── */}
+      <AddClientModal
+        isOpen={showAddClientModal}
+        onClose={() => setShowAddClientModal(false)}
+      />
+
       <AddAppointmentModal
         isOpen={showAddModal}
         onClose={() => { setShowAddModal(false); setSelectedSlot(null); }}

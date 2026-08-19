@@ -56,7 +56,7 @@ export function Onboarding() {
         'settings.reminderHoursBefore': 24,
         'settings.whatsappNumber': '',
       });
-      navigate('/dashboard');
+      navigate('/calendar');
     } catch (err) {
       console.error('Error saving onboarding:', err);
       alert('Errore durante il salvataggio. Riprova.');
@@ -80,7 +80,7 @@ export function Onboarding() {
   };
 
   if (user?.salonName && user?.settings?.workingHours && !step) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/calendar" replace />;
   }
 
   return (
