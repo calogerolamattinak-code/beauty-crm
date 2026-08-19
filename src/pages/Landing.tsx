@@ -18,6 +18,16 @@ import {
   TrendingUp,
   Smartphone,
 } from 'lucide-react';
+
+function InstagramIcon({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+    </svg>
+  );
+}
 import { useState } from 'react';
 import { useTheme } from '../hooks/useTheme';
 
@@ -201,6 +211,15 @@ export function Landing() {
 
           {/* Actions */}
           <div className="hidden md:flex items-center gap-3">
+            <a
+              href="https://www.instagram.com/beautycrm.website/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-ghost p-2 rounded-xl text-[var(--text-muted)] hover:text-[#E1306C] hover:scale-110 transition-all"
+              title="Seguici su Instagram @beautycrm.website"
+            >
+              <InstagramIcon className="w-5 h-5" />
+            </a>
             <button
               onClick={toggleMode}
               className="btn-ghost p-2 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-dark)]"
@@ -224,6 +243,15 @@ export function Landing() {
 
           {/* Mobile menu button */}
           <div className="flex items-center gap-2 md:hidden">
+            <a
+              href="https://www.instagram.com/beautycrm.website/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 text-[var(--text-muted)] hover:text-[#E1306C]"
+              title="Instagram"
+            >
+              <InstagramIcon className="w-5 h-5" />
+            </a>
             <button
               onClick={toggleMode}
               className="p-2 text-[var(--text-muted)] hover:text-[var(--text-dark)]"
@@ -675,6 +703,46 @@ export function Landing() {
         </div>
       </section>
 
+      {/* ─── INSTAGRAM COMMUNITY CARD ─── */}
+      <section className="py-12 px-4 sm:px-6 max-w-4xl mx-auto">
+        <a
+          href="https://www.instagram.com/beautycrm.website/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group block rounded-3xl p-6 sm:p-8 border border-[var(--border-strong)] bg-gradient-to-r from-[#F58529]/10 via-[#DD2A7B]/10 to-[#8134AF]/10 hover:border-[#DD2A7B]/40 transition-all card-hover"
+        >
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden bg-white p-1.5 shadow-xl ring-2 ring-[#DD2A7B]/30 flex-shrink-0 group-hover:scale-105 transition-transform">
+                <img
+                  src="/instagram-qr.png"
+                  alt="Instagram QR Code Beauty CRM"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#DD2A7B]/15 text-[#E1306C] text-xs font-bold uppercase tracking-wider">
+                  <InstagramIcon className="w-3.5 h-3.5" />
+                  Community Saloni
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-[var(--text-dark)]">
+                  Seguici su Instagram <span className="text-[#E1306C]">@beautycrm.website</span>
+                </h3>
+                <p className="text-sm text-[var(--text-muted)] max-w-md">
+                  Inquadra il QR code o clicca qui per consigli di marketing, aggiornamenti e pillole pratiche per far crescere il tuo salone.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex-shrink-0">
+              <span className="btn-primary !text-sm !py-2.5 !px-5 shadow-lg group-hover:scale-105 transition-transform">
+                Vai al Profilo <ArrowRight className="w-4 h-4" />
+              </span>
+            </div>
+          </div>
+        </a>
+      </section>
+
       {/* ─── FINAL CTA ─── */}
       <section className="py-20 px-4 sm:px-6 max-w-5xl mx-auto text-center">
         <div className="rounded-3xl p-8 sm:p-14 border border-[var(--primary-300)]/40 bg-gradient-to-br from-[var(--bg-card)] via-[var(--primary-100)]/30 to-[var(--bg-card)] shadow-2xl relative overflow-hidden">
@@ -698,9 +766,20 @@ export function Landing() {
       {/* ─── FOOTER ─── */}
       <footer className="border-t border-[var(--border-light)] bg-[var(--bg-card)] py-12 px-4 sm:px-6 text-sm text-[var(--text-muted)]">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <img src="/logo.jpg" alt="Beauty CRM" className="w-8 h-8 rounded-lg object-cover" />
-            <span className="font-bold text-[var(--text-dark)]">Beauty CRM</span>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
+              <img src="/logo.jpg" alt="Beauty CRM" className="w-8 h-8 rounded-lg object-cover" />
+              <span className="font-bold text-[var(--text-dark)]">Beauty CRM</span>
+            </div>
+            <a
+              href="https://www.instagram.com/beautycrm.website/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#F58529]/10 via-[#DD2A7B]/10 to-[#8134AF]/10 border border-[#DD2A7B]/20 text-[#E1306C] hover:scale-105 transition-all text-xs font-semibold"
+            >
+              <InstagramIcon className="w-4 h-4" />
+              <span>@beautycrm.website</span>
+            </a>
           </div>
 
           <div className="flex flex-wrap justify-center gap-6 text-xs">
