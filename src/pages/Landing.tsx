@@ -36,6 +36,14 @@ function TikTokIcon({ className = "w-5 h-5" }: { className?: string }) {
     </svg>
   );
 }
+
+function YouTubeIcon({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+    </svg>
+  );
+}
 import { useState } from 'react';
 import { useTheme } from '../hooks/useTheme';
 
@@ -237,6 +245,15 @@ export function Landing() {
             >
               <TikTokIcon className="w-5 h-5" />
             </a>
+            <a
+              href="https://youtube.com/@beauty_crm"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-ghost p-2 rounded-xl text-[var(--text-muted)] hover:text-[#FF0000] hover:scale-110 transition-all"
+              title="YouTube @beauty_crm"
+            >
+              <YouTubeIcon className="w-5 h-5" />
+            </a>
             <button
               onClick={toggleMode}
               className="btn-ghost p-2 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-dark)]"
@@ -277,6 +294,15 @@ export function Landing() {
               title="TikTok"
             >
               <TikTokIcon className="w-5 h-5" />
+            </a>
+            <a
+              href="https://youtube.com/@beauty_crm"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 text-[var(--text-muted)] hover:text-[#FF0000]"
+              title="YouTube"
+            >
+              <YouTubeIcon className="w-5 h-5" />
             </a>
             <button
               onClick={toggleMode}
@@ -730,8 +756,8 @@ export function Landing() {
       </section>
 
       {/* ─── SOCIAL & COMMUNITY CHANNELS ─── */}
-      <section className="py-12 px-4 sm:px-6 max-w-4xl mx-auto space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <section className="py-12 px-4 sm:px-6 max-w-5xl mx-auto space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Instagram Card */}
           <a
             href="https://www.instagram.com/beautycrm.website/"
@@ -787,6 +813,32 @@ export function Landing() {
               </div>
             </div>
           </a>
+
+          {/* YouTube Card */}
+          <a
+            href="https://youtube.com/@beauty_crm"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group block rounded-3xl p-6 border border-[var(--border-strong)] bg-gradient-to-br from-[#FF0000]/10 via-[#FF0000]/5 to-[#FF4E4E]/10 hover:border-[#FF0000]/40 transition-all card-hover"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-white p-2 shadow-md ring-2 ring-[#FF0000]/30 flex-shrink-0 group-hover:scale-105 transition-transform">
+                <YouTubeIcon className="w-full h-full text-[#FF0000]" />
+              </div>
+              <div className="space-y-1">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FF0000]/15 text-[#FF0000] text-[11px] font-bold uppercase tracking-wider">
+                  <YouTubeIcon className="w-3 h-3" />
+                  YouTube
+                </div>
+                <h3 className="text-base sm:text-lg font-bold text-[var(--text-dark)]">
+                  @beauty_crm
+                </h3>
+                <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+                  Dirette e contenuti video per far crescere il tuo salone di bellezza.
+                </p>
+              </div>
+            </div>
+          </a>
         </div>
       </section>
 
@@ -835,6 +887,15 @@ export function Landing() {
             >
               <TikTokIcon className="w-3.5 h-3.5" />
               <span>TikTok</span>
+            </a>
+            <a
+              href="https://youtube.com/@beauty_crm"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-[#FF0000]/10 border border-[#FF0000]/20 text-[#FF0000] hover:scale-105 transition-all text-xs font-semibold"
+            >
+              <YouTubeIcon className="w-3.5 h-3.5" />
+              <span>YouTube</span>
             </a>
           </div>
 
